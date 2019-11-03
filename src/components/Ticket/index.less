@@ -1,0 +1,118 @@
+.ticket {
+  width: 318px;
+  min-height: 90px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 3px 13px -2px rgba(235, 235, 235, 1);
+  border-radius: 15px;
+  overflow: hidden;
+  margin: 0 auto 20px;
+  font-family: 'PingFang SC Medium';
+  display: flex;
+  // align-items: center;
+  cursor: pointer;
+  position: relative;
+  &.disabled {
+    opacity: 0.5;
+    .tag {
+      border-color: #000;
+      color: #000;
+      .word {
+        border-color: #000;
+        color: #000;
+      }
+    }
+  }
+  &.cash {
+    box-shadow: none;
+    margin: 0;
+    .left {
+      background-color: #50e3c2;
+      color: #fff;
+    }
+  }
+  .left {
+    width: 89px;
+    // height: 90px;
+    background: #ffff00;
+    font-size: 18px;
+    font-weight: 500;
+    color: #000;
+    line-height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .right {
+    width: 174px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    .title {
+      font-size: 12px;
+      font-weight: 400;
+      color: #000;
+      line-height: 17px;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .content {
+      font-size: 9px;
+      font-weight: 300;
+      color: rgba(155, 155, 155, 1);
+      line-height: 13px;
+    }
+    .date {
+      margin-top: 6px;
+      height: 15px;
+      border-radius: 7px;
+      border: 1px dashed rgba(151, 151, 151, 1);
+      font-size: 9px;
+      font-weight: 300;
+      color: rgba(155, 155, 155, 1);
+      line-height: 13px;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 5px;
+      white-space: nowrap;
+      span:first-child {
+        margin-right: 5px;
+      }
+    }
+  }
+  .tag {
+    width: 62px;
+    height: 62px;
+    opacity: 0.5;
+    border: 1px solid blue;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transform: rotate(-26deg);
+    position: absolute;
+    top: ~'calc(50% - 31px)';
+    right: 5px;
+    .word {
+      color: blue;
+      font-size: 12px;
+      font-weight: 400;
+      padding: 7px;
+      width: 100%;
+      border: 1px solid blue;
+      border-left: none;
+      border-right: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .checked {
+    position: absolute;
+    top: ~'calc(50% - 11px)';
+    right: 27px;
+    width: 22px;
+    height: 22px;
+  }
+}

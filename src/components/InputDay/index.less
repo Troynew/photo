@@ -1,0 +1,38 @@
+.inputDay {
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  :global {
+    .ant-input-number {
+      width: 136px;
+    }
+    .ant-input-number-handler-wrap {
+      right: 4em;
+      border-right: 1px solid #d9d9d9;
+      border-radius: 0;
+    }
+    .ant-input-number-input-wrap {
+      padding-right: 4em;
+      box-sizing: content-box;
+    }
+    .ant-select {
+      width: calc(4em + 2px);
+      position: absolute;
+      top: 0;
+      right: 0;
+      border: 1px solid transparent;
+    }
+    .ant-select-focused {
+      border-color: transparent;
+    }
+    .ant-select-selection {
+      border: none;
+      box-shadow: none;
+      background: #eee;
+      border-radius: 0 4px 4px 0;
+    }
+    .ant-select-selection--single {
+      height: auto;
+    }
+  }
+}

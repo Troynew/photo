@@ -1,0 +1,44 @@
+.standardUpload {
+  display: inline-block;
+  :global {
+    .ant-upload-select-picture-card {
+      margin: 0;
+    }
+
+    .ant-upload-list-picture-card {
+      .ant-upload-list-item {
+        margin: 0;
+      }
+
+      .ant-upload-list-item-uploading,
+      .ant-upload-list-item-error {
+        display: none;
+      }
+
+      .ant-upload-list-item-actions {
+        a {
+          display: inline-block;
+          width: 32px;
+        }
+
+        .anticon-delete {
+          margin: 0 8px;
+        }
+      }
+
+      .ant-upload-list-item-info:before {
+        left: 0;
+      }
+    }
+  }
+}
+
+.upload {
+  width: 128px;
+  height: 128px;
+}
+
+.previewImg {
+  width: 100%;
+  margin-top: 15px;
+}
