@@ -95,7 +95,7 @@ class index extends PureComponent {
     const { current, pageSize } = pagination;
     let queryParams = {
       ...location.query,
-      pageIndex: current,
+      pageNum: current,
       pageSize,
     };
 

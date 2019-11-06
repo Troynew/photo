@@ -67,12 +67,28 @@ export default function request(url, options = {}) {
     options.method === 'PATCH'
   ) {
     const params = options.body || {};
-    options.headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json; charset=utf-8',
-      ...options.headers,
-    };
-    options.body = JSON.stringify(transformParams(params));
+
+    if (options.isFormData) {
+      options.headers = {
+        Accept: 'application/json',
+        ...options.headers,
+      };
+      const formData = new FormData();
+      // eslint-disable-next-line
+      for (let key in params) {
+        if ({}.hasOwnProperty.call(params, key) && params[key] != null) {
+          formData.append(key, params[key]);
+        }
+      }
+      options.body = formData;
+    } else {
+      options.headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json; charset=utf-8',
+        ...options.headers,
+      };
+      options.body = JSON.stringify(transformParams(params));
+    }
   }
   return (
     fetch(completeUrl, options)

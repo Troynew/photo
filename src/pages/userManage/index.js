@@ -7,6 +7,7 @@ import AddUserModal from './components/AddUserModal';
 import ListPageWrapper from '@/components/ListPageWrapper';
 import ListForm from '@/components/ListForm';
 import ListTable from '@/components/ListTable';
+import NotBubbleBlock from '@/components/NotBubbleBlock';
 import { _UNITE_SELECT_ALL } from '@/components/ListForm/utils/constants';
 
 @connect(({ loading, userManage }) => ({
@@ -15,7 +16,7 @@ import { _UNITE_SELECT_ALL } from '@/components/ListForm/utils/constants';
   pagination: userManage.pagination,
 }))
 export default class User extends Component {
-  state = { showAddModal: false };
+  state = { showAddModal: false, userInfo: {}, modalType: null };
 
   query = this.props.location.query;
 
@@ -64,6 +65,22 @@ export default class User extends Component {
       title: '客户来源',
       dataIndex: 'customerSource',
     },
+    {
+      title: '编辑',
+      dataIndex: 'edit',
+      render: (text, record) => {
+        return (
+          <div>
+            <NotBubbleBlock>
+              <a onClick={() => this.handleEditUser(record)}>编辑</a>
+            </NotBubbleBlock>
+            <NotBubbleBlock>
+              <a onClick={() => this.handleDeleteUser(record)}>删除</a>
+            </NotBubbleBlock>
+          </div>
+        );
+      },
+    },
   ];
 
   listFormData = [
@@ -90,24 +107,50 @@ export default class User extends Component {
     });
   };
 
-  handleShowAddModal = () => this.setState({ showAddModal: true });
+  handleShowAddModal = () => this.setState({ showAddModal: true, modalType: 'add' });
 
   handleCloseAddModal = () => this.setState({ showAddModal: false });
 
   handleAddUser = userData => {
-    console.log('add===>', userData);
-    this.props
-      .dispatch({
-        type: 'userManage/addUser',
-        payload: userData,
-      })
-      .then(res =>
-        router.push({
-          pathname: '/userManage',
-          query: this.props.location.query,
+    if (this.state.modalType === 'add') {
+      console.log('add===>', userData);
+      this.props
+        .dispatch({
+          type: 'userManage/addUser',
+          payload: userData,
         })
-      );
+        .then(res => {
+          router.push({
+            pathname: '/userManage',
+            query: this.props.location.query,
+          });
+          this.setState({ showAddModal: false });
+        });
+    } else {
+      const { userInfo } = this.state;
+      this.props
+        .dispatch({
+          type: 'userManage/editUser',
+          payload: { ...userInfo, ...userData },
+        })
+        .then(res => {
+          router.push({
+            pathname: '/userManage',
+            query: this.props.location.query,
+          });
+          this.setState({ showAddModal: false });
+        });
+    }
   };
+
+  handleDeleteUser = data => {
+    this.props.dispatch({
+      type: 'userManage/deleteUser',
+      payload: { babyId: data.babyId },
+    });
+  };
+
+  handleEditUser = data => this.setState({ showAddModal: true, userInfo: data, modalType: 'edit' });
 
   showTwoDemical = (value = 0) => {
     return Number(value).toFixed(2);
@@ -127,6 +170,8 @@ export default class User extends Component {
       showModal: this.state.showAddModal,
       onModalCancel: this.handleCloseAddModal,
       onModalOK: this.handleAddUser,
+      initData: this.state.userInfo,
+      modalType: this.state.modalType,
     };
 
     return (
@@ -147,7 +192,7 @@ export default class User extends Component {
                 onClick={this.handleShowAddModal}
                 style={{ display: 'inLine-block' }}
               >
-                新建
+                新增用户
               </Button>
             </div>
           }

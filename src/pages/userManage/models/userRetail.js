@@ -1,6 +1,6 @@
 import modelExtend from 'dva-model-extend';
 import { pageModel } from '@/utils/model';
-import { queryUserList, addUser } from '../service';
+import { queryUserList, addUser, editUser, deleteUser } from '../service';
 
 export default modelExtend(pageModel, {
   namespace: 'userManage',
@@ -37,6 +37,16 @@ export default modelExtend(pageModel, {
 
     *addUser({ payload }, { call }) {
       const data = yield call(addUser, payload);
+      if (data.status) return data;
+    },
+
+    *editUser({ payload }, { call }) {
+      const data = yield call(editUser, payload);
+      if (data.status) return data;
+    },
+
+    *deleteUser({ payload }, { call }) {
+      const data = yield call(deleteUser, payload);
       if (data.status) return data;
     },
   },
