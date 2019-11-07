@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import InputItem from './components/InputItem';
 import NumRangeItem from './components/NumRangeItem';
 import SelectItem from './components/SelectItem';
-import DatePicerItem from './components/DatePickerItem';
+import DatePickerItem from './components/DatePickerItem';
 import RangePickerItem from './components/RangePickerItem';
 import CascaderItem from './components/CascaderItem';
 import { resetValues } from './utils/reset';

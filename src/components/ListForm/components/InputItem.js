@@ -10,7 +10,7 @@ const InputItem = ({ config, innerModal, getFieldDecorator }) => (
   <FormItem label={config.label} {...(innerModal ? modalFormItemLayout : formItemLayout)}>
     {getFieldDecorator(config.name, {
       initialValue: config.initialValue,
-    })(<Input placeholder={config.placeholder || '请输入'} />)}
+    })(<Input allowClear={true} placeholder={config.placeholder || '请输入'} />)}
   </FormItem>
 );
 

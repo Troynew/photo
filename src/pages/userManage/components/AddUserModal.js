@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
-import { Form, Input, Modal } from 'antd';
-
+import { Form, Input, Modal, Radio, DatePicker } from 'antd';
+import moment from 'moment';
 import config from '@/utils/config';
 
 const { modalFormItemLayout } = config;
 const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
 
 @Form.create()
 export default class AddUserModal extends PureComponent {
@@ -20,6 +21,42 @@ export default class AddUserModal extends PureComponent {
       onModalOK(values);
     });
   };
+
+  phoneRegex = value => {
+    const regex = /^1(3|4|5|7|8|9)\d{9}$/;
+    return regex.test(value);
+  };
+
+  validatePhone1 = (rule, value, callback) => {
+    if (value !== this.props.initData.fatherPhoneNum) {
+      if (!value) {
+        callback();
+      }
+      if (!this.phoneRegex(value)) {
+        callback('请输入正确的手机号码');
+      } else {
+        callback();
+      }
+    } else {
+      callback();
+    }
+  };
+
+  validatePhone2 = (rule, value, callback) => {
+    if (value !== this.props.initData.motherPhoneNum) {
+      if (!value) {
+        callback();
+      }
+      if (!this.phoneRegex(value)) {
+        callback('请输入正确的手机号码');
+      } else {
+        callback();
+      }
+    } else {
+      callback();
+    }
+  };
+
   render() {
     const {
       form: { getFieldDecorator },
@@ -37,6 +74,7 @@ export default class AddUserModal extends PureComponent {
         onCancel={onModalCancel}
         maskClosable={true}
         okText="保存"
+        destroyOnClose
       >
         <Form>
           <FormItem {...modalFormItemLayout} label="宝贝姓名">
@@ -47,23 +85,28 @@ export default class AddUserModal extends PureComponent {
           <FormItem {...modalFormItemLayout} label="性别">
             {getFieldDecorator('babySex', {
               initialValue: modalType === 'edit' ? initData.babySex : null,
-            })(<Input placeholder="请输入" />)}
+            })(
+              <RadioGroup>
+                <Radio value={1}>男</Radio>
+                <Radio value={2}>女</Radio>
+              </RadioGroup>
+            )}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="农历生日">
             {getFieldDecorator('lunarBirthdayDate', {
-              initialValue: modalType === 'edit' ? initData.lunarBirthdayDate : null,
-            })(<Input placeholder="请输入" />)}
+              initialValue: modalType === 'edit' ? moment(initData.lunarBirthdayDate) : null,
+            })(<DatePicker format={'YYYY-MM-DD'} />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="新历生日">
             {getFieldDecorator('solarBirthdayDate', {
-              initialValue: modalType === 'edit' ? initData.solarBirthdayDate : null,
+              initialValue: modalType === 'edit' ? moment(initData.solarBirthdayDate) : null,
               rules: [
                 {
                   required: true,
                   message: '请输入新历生日',
                 },
               ],
-            })(<Input placeholder="请输入" />)}
+            })(<DatePicker format={'YYYY-MM-DD'} />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="父亲">
             {getFieldDecorator('fatherName', {
@@ -84,16 +127,25 @@ export default class AddUserModal extends PureComponent {
           <FormItem {...modalFormItemLayout} label="父亲电话">
             {getFieldDecorator('fatherPhoneNum', {
               initialValue: modalType === 'edit' ? initData.fatherPhoneNum : null,
+
+              rules: [
+                {
+                  validator: this.validatePhone1,
+                },
+              ],
             })(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="母亲电话">
             {getFieldDecorator('motherPhoneNum', {
               initialValue: modalType === 'edit' ? initData.motherPhoneNUm : null,
-
+              validator: this.validatePhone,
               rules: [
                 {
                   required: true,
                   message: '请输入组别母亲或者父亲电话电话',
+                },
+                {
+                  validator: this.validatePhone2,
                 },
               ],
             })(<Input placeholder="请输入" />)}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import router from 'umi/router';
 import { connect } from 'dva';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import AddUserModal from './components/AddUserModal';
 
 import ListPageWrapper from '@/components/ListPageWrapper';
@@ -9,6 +9,7 @@ import ListForm from '@/components/ListForm';
 import ListTable from '@/components/ListTable';
 import NotBubbleBlock from '@/components/NotBubbleBlock';
 import { _UNITE_SELECT_ALL } from '@/components/ListForm/utils/constants';
+import moment from 'moment';
 
 @connect(({ loading, userManage }) => ({
   loading: loading.effects['userManage/queryUserList'],
@@ -28,6 +29,7 @@ export default class User extends Component {
     {
       title: '性别',
       dataIndex: 'babySex',
+      render: text => <span>{text === 1 ? '男' : '女'}</span>,
     },
     {
       title: '农历生日',
@@ -90,6 +92,13 @@ export default class User extends Component {
       type: 'input',
       initialValue: this.query.babyName,
     },
+    {
+      name: 'solarBirthdayDate',
+      label: '新历生日',
+      type: 'datePicker',
+      initialValue: this.query.solarBirthdayDate,
+      format: 'YYYY-MM-DD',
+    },
   ];
 
   componentDidMount() {
@@ -101,9 +110,14 @@ export default class User extends Component {
 
   handleSearch = params => {
     console.log('params', params);
+    const { solarBirthdayDate } = params;
     router.push({
       pathname: '/userManage',
-      query: { ...this.props.location.query, ...params },
+      query: {
+        ...this.props.location.query,
+        ...params,
+        solarBirthdayDate: moment(solarBirthdayDate).format('YYYY-MM-DD'),
+      },
     });
   };
 
@@ -114,12 +128,23 @@ export default class User extends Component {
   handleAddUser = userData => {
     if (this.state.modalType === 'add') {
       console.log('add===>', userData);
+      const { babySex, lunarBirthdayDate, solarBirthdayDate } = userData;
       this.props
         .dispatch({
           type: 'userManage/addUser',
-          payload: userData,
+          payload: {
+            ...userData,
+            babySex: babySex === '男' ? 1 : 2,
+            solarBirthdayDate: solarBirthdayDate
+              ? moment(solarBirthdayDate).format('YYYY-MM-DD')
+              : null,
+            lunarBirthdayDate: lunarBirthdayDate
+              ? moment(lunarBirthdayDate).format('YYYY-MM-DD')
+              : null,
+          },
         })
         .then(res => {
+          message.success('新增宝贝资料成功');
           router.push({
             pathname: '/userManage',
             query: this.props.location.query,
@@ -131,9 +156,18 @@ export default class User extends Component {
       this.props
         .dispatch({
           type: 'userManage/editUser',
-          payload: { ...userInfo, ...userData },
+          payload: {
+            ...userInfo,
+            ...userData,
+            createBy: null,
+            params: null,
+            searchValue: null,
+            updateBy: null,
+            updataTime: null,
+          },
         })
         .then(res => {
+          message.success('修改宝贝资料成功');
           router.push({
             pathname: '/userManage',
             query: this.props.location.query,
@@ -144,10 +178,12 @@ export default class User extends Component {
   };
 
   handleDeleteUser = data => {
-    this.props.dispatch({
-      type: 'userManage/deleteUser',
-      payload: { babyId: data.babyId },
-    });
+    this.props
+      .dispatch({
+        type: 'userManage/deleteUser',
+        payload: { ids: [data.babyId] },
+      })
+      .then(res => message.success('删除成功'));
   };
 
   handleEditUser = data => this.setState({ showAddModal: true, userInfo: data, modalType: 'edit' });
@@ -192,7 +228,7 @@ export default class User extends Component {
                 onClick={this.handleShowAddModal}
                 style={{ display: 'inLine-block' }}
               >
-                新增用户
+                新增宝贝
               </Button>
             </div>
           }
