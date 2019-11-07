@@ -94,7 +94,12 @@ export default class AddUserModal extends PureComponent {
           </FormItem>
           <FormItem {...modalFormItemLayout} label="农历生日">
             {getFieldDecorator('lunarBirthdayDate', {
-              initialValue: modalType === 'edit' ? moment(initData.lunarBirthdayDate) : null,
+              initialValue:
+                modalType === 'edit'
+                  ? initData.lunarBirthdayDate
+                    ? moment(initData.lunarBirthdayDate)
+                    : null
+                  : null,
             })(<DatePicker format={'YYYY-MM-DD'} />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="新历生日">
@@ -127,13 +132,12 @@ export default class AddUserModal extends PureComponent {
           <FormItem {...modalFormItemLayout} label="父亲电话">
             {getFieldDecorator('fatherPhoneNum', {
               initialValue: modalType === 'edit' ? initData.fatherPhoneNum : null,
-
               rules: [
                 {
                   validator: this.validatePhone1,
                 },
               ],
-            })(<Input placeholder="请输入" />)}
+            })(<Input maxLength={11} placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="母亲电话">
             {getFieldDecorator('motherPhoneNum', {
@@ -148,7 +152,7 @@ export default class AddUserModal extends PureComponent {
                   validator: this.validatePhone2,
                 },
               ],
-            })(<Input placeholder="请输入" />)}
+            })(<Input maxLength={11} placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="家庭住址">
             {getFieldDecorator('address', {

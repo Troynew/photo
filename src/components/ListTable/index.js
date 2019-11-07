@@ -21,7 +21,7 @@ class index extends PureComponent {
 
   constructor(props) {
     super(props);
-    this.uid = props.uid || 'id' || 'babyId';
+    this.uid = props.uid || 'babyId';
   }
 
   state = {

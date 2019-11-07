@@ -17,7 +17,14 @@ import moment from 'moment';
   pagination: userManage.pagination,
 }))
 export default class User extends Component {
-  state = { showAddModal: false, userInfo: {}, modalType: null };
+  state = {
+    showAddModal: false,
+    userInfo: {},
+    modalType: null,
+    idList: [],
+    allIdList: [],
+    deleteAll: false,
+  };
 
   query = this.props.location.query;
 
@@ -183,7 +190,34 @@ export default class User extends Component {
         type: 'userManage/deleteUser',
         payload: { ids: [data.babyId] },
       })
-      .then(res => message.success('删除成功'));
+      .then(res => {
+        message.success('删除成功');
+        router.push({
+          pathname: '/userManage',
+          query: this.props.location.query,
+        });
+      });
+  };
+
+  handleDeleteAll = () => {
+    const { idList, allIdList, deleteAll, deletePart } = this.state;
+    if (!deletePart || !deleteAll) {
+      message.warn('请选择要删除的用户或者全选');
+      return;
+    } else {
+      this.props
+        .dispatch({
+          type: 'userManage/deleteUser',
+          payload: { ids: allIdList || idList },
+        })
+        .then(res => {
+          message.success('删除成功');
+          router.push({
+            pathname: '/userManage',
+            query: this.props.location.query,
+          });
+        });
+    }
   };
 
   handleEditUser = data => this.setState({ showAddModal: true, userInfo: data, modalType: 'edit' });
@@ -191,6 +225,10 @@ export default class User extends Component {
   showTwoDemical = (value = 0) => {
     return Number(value).toFixed(2);
   };
+
+  handleSelectChange = (idList, rowData) => this.setState({ idList, deletePart: true });
+  handleSelectAllChange = (allIdList, isSelected, rowData) =>
+    this.setState({ allIdList, deleteAll: true });
 
   render() {
     const { pagination, loading, list } = this.props;
@@ -200,6 +238,9 @@ export default class User extends Component {
       dataSource: list,
       loading,
       pagination,
+      closeRowSelection: false,
+      onSelectChange: this.handleSelectChange,
+      onSelectAllChange: this.handleSelectAllChange,
     };
 
     const modalProps = {
@@ -223,12 +264,20 @@ export default class User extends Component {
           listOperatorInst={
             <div style={{ height: '32px' }}>
               <Button
-                icon="plus"
+                icon="user-add"
                 type="primary"
                 onClick={this.handleShowAddModal}
                 style={{ display: 'inLine-block' }}
               >
                 新增宝贝
+              </Button>
+              <Button
+                icon="user-delete"
+                type="primary"
+                onClick={this.handleDeleteAll}
+                style={{ display: 'inLine-block' }}
+              >
+                批量删除
               </Button>
             </div>
           }
