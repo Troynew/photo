@@ -132,9 +132,9 @@ export default class User extends Component {
   handleCloseAddModal = () => this.setState({ showAddModal: false });
 
   handleAddUser = userData => {
+    const { babySex, lunarBirthdayDate, solarBirthdayDate } = userData;
     if (this.state.modalType === 'add') {
       console.log('add===>', userData);
-      const { babySex, lunarBirthdayDate, solarBirthdayDate } = userData;
       this.props
         .dispatch({
           type: 'userManage/addUser',
@@ -159,6 +159,8 @@ export default class User extends Component {
         });
     } else {
       const { userInfo } = this.state;
+
+      console.log('fuckkk===>', userData, userInfo);
       this.props
         .dispatch({
           type: 'userManage/editUser',
@@ -176,6 +178,8 @@ export default class User extends Component {
             searchValue: null,
             updateBy: null,
             updataTime: null,
+            createTime: null,
+            updateTime: null,
           },
         })
         .then(res => {

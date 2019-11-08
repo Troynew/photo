@@ -14,10 +14,8 @@ export default class AddUserModal extends PureComponent {
       form: { validateFields },
       onModalOK,
     } = this.props;
-    console.log('cufk', this.props);
     validateFields((err, values) => {
       if (err) return;
-      console.log('fuck');
       onModalOK(values);
     });
   };
