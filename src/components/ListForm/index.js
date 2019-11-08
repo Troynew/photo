@@ -27,6 +27,7 @@ class ListForm extends PureComponent {
       if ({}.hasOwnProperty.call(values, key)) {
         if (
           values[key] === undefined ||
+          values[key] === null ||
           values[key] === _UNITE_SELECT_ALL ||
           (Array.isArray(values[key]) && values[key].includes(_UNITE_SELECT_ALL)) ||
           (typeof values[key] === 'object' && values[key]['key'] === _UNITE_SELECT_ALL)

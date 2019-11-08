@@ -10,7 +10,7 @@ const FormItem = Form.Item;
 const DatePickerItem = ({ config, innerModal, getFieldDecorator }) => (
   <FormItem label={config.label} {...(innerModal ? modalFormItemLayout : formItemLayout)}>
     {getFieldDecorator(config.name, {
-      initialValue: config.initialValue && moment(config.initialValue),
+      initialValue: config.initialValue ? moment(config.initialValue) : null,
     })(<DatePicker format={config.format} />)}
   </FormItem>
 );

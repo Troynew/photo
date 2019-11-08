@@ -107,7 +107,9 @@ export default class User extends Component {
       query: {
         ...this.props.location.query,
         ...params,
-        solarBirthdayDate: moment(solarBirthdayDate).format('YYYY-MM-DD'),
+        solarBirthdayDate: solarBirthdayDate
+          ? moment(solarBirthdayDate).format('YYYY-MM-DD')
+          : null,
       },
     });
   };
