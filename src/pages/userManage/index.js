@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import router from 'umi/router';
 import { connect } from 'dva';
-import { Button, message } from 'antd';
+import { Button, message, Modal } from 'antd';
 import AddUserModal from './components/AddUserModal';
 
 import ListPageWrapper from '@/components/ListPageWrapper';
@@ -192,22 +192,30 @@ export default class User extends Component {
 
   handleDeleteUser = () => {
     const { idList } = this.state;
+    const that = this;
     if (idList.length === 0) {
       message.warn('请勾选要删除的用户');
       return;
     } else {
-      this.props
-        .dispatch({
-          type: 'userManage/deleteUser',
-          payload: { ids: idList },
-        })
-        .then(res => {
-          message.success('删除成功');
-          router.push({
-            pathname: '/userManage',
-            query: this.props.location.query,
-          });
-        });
+      Modal.confirm({
+        title: '确定删除宝贝资料嘛?',
+        content: '',
+        onOk() {
+          that.props
+            .dispatch({
+              type: 'userManage/deleteUser',
+              payload: { ids: idList },
+            })
+            .then(res => {
+              message.success('删除成功');
+              router.push({
+                pathname: '/userManage',
+                query: that.props.location.query,
+              });
+            });
+        },
+        onCancel() {},
+      });
     }
   };
 

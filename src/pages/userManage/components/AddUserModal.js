@@ -55,6 +55,10 @@ export default class AddUserModal extends PureComponent {
     }
   };
 
+  showTwoDemical = (value = 0) => {
+    return Number(value).toFixed(2);
+  };
+
   render() {
     const {
       form: { getFieldDecorator },
@@ -156,7 +160,7 @@ export default class AddUserModal extends PureComponent {
           </FormItem>
           <FormItem {...modalFormItemLayout} label="余额">
             {getFieldDecorator('balance', {
-              initialValue: modalType === 'edit' ? initData.balance : null,
+              initialValue: modalType === 'edit' ? this.showTwoDemical(initData.balance) : null,
             })(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="家庭住址">
