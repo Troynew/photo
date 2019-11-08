@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { Form, DatePicker } from 'antd';
 import moment from 'moment';
 
-import { propTypes, defaultProps, formItemLayout } from '../utils/props';
+import { propTypes, defaultProps, formItemLayout, modalFormItemLayout } from '../utils/props';
 
 const FormItem = Form.Item;
 
-const DatePickerItem = ({ config, getFieldDecorator }) => (
-  <FormItem label={config.label} {...formItemLayout}>
+const DatePickerItem = ({ config, innerModal, getFieldDecorator }) => (
+  <FormItem label={config.label} {...(innerModal ? modalFormItemLayout : formItemLayout)}>
     {getFieldDecorator(config.name, {
       initialValue: config.initialValue && moment(config.initialValue),
     })(<DatePicker format={config.format} />)}

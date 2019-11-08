@@ -80,11 +80,13 @@ export default class AddUserModal extends PureComponent {
           <FormItem {...modalFormItemLayout} label="宝贝姓名">
             {getFieldDecorator('babyName', {
               initialValue: modalType === 'edit' ? initData.babyName : null,
+              rules: [{ required: true, message: '请输入宝贝姓名' }],
             })(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="性别">
             {getFieldDecorator('babySex', {
               initialValue: modalType === 'edit' ? initData.babySex : null,
+              rules: [{ required: true, message: '请选择宝贝性别' }],
             })(
               <RadioGroup>
                 <Radio value={1}>男</Radio>
@@ -141,7 +143,7 @@ export default class AddUserModal extends PureComponent {
           </FormItem>
           <FormItem {...modalFormItemLayout} label="母亲电话">
             {getFieldDecorator('motherPhoneNum', {
-              initialValue: modalType === 'edit' ? initData.motherPhoneNUm : null,
+              initialValue: modalType === 'edit' ? initData.motherPhoneNum : null,
               validator: this.validatePhone,
               rules: [
                 {

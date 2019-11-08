@@ -74,22 +74,6 @@ export default class User extends Component {
       title: '客户来源',
       dataIndex: 'customerSource',
     },
-    {
-      title: '编辑',
-      dataIndex: 'edit',
-      render: (text, record) => {
-        return (
-          <div>
-            <NotBubbleBlock>
-              <a onClick={() => this.handleEditUser(record)}>编辑</a>
-            </NotBubbleBlock>
-            <NotBubbleBlock>
-              <a onClick={() => this.handleDeleteUser(record)}>删除</a>
-            </NotBubbleBlock>
-          </div>
-        );
-      },
-    },
   ];
 
   listFormData = [
@@ -184,31 +168,16 @@ export default class User extends Component {
     }
   };
 
-  handleDeleteUser = data => {
-    this.props
-      .dispatch({
-        type: 'userManage/deleteUser',
-        payload: { ids: [data.babyId] },
-      })
-      .then(res => {
-        message.success('删除成功');
-        router.push({
-          pathname: '/userManage',
-          query: this.props.location.query,
-        });
-      });
-  };
-
-  handleDeleteAll = () => {
-    const { idList, allIdList, deleteAll, deletePart } = this.state;
-    if (!deletePart || !deleteAll) {
-      message.warn('请选择要删除的用户或者全选');
+  handleDeleteUser = () => {
+    const { idList } = this.state;
+    if (idList.length === 0) {
+      message.warn('请选择要删除的用户');
       return;
     } else {
       this.props
         .dispatch({
           type: 'userManage/deleteUser',
-          payload: { ids: allIdList || idList },
+          payload: { ids: idList },
         })
         .then(res => {
           message.success('删除成功');
@@ -220,15 +189,25 @@ export default class User extends Component {
     }
   };
 
-  handleEditUser = data => this.setState({ showAddModal: true, userInfo: data, modalType: 'edit' });
+  handleEditUser = () => {
+    const { idList } = this.state;
+    if (idList.length === 0) {
+      message.warn('请选择一个会员');
+      return;
+    } else if (idList.length > 1) {
+      message.warn('只能选择一个会员');
+      return;
+    } else {
+      this.setState({ showAddModal: true, modalType: 'edit' });
+    }
+  };
 
   showTwoDemical = (value = 0) => {
     return Number(value).toFixed(2);
   };
 
-  handleSelectChange = (idList, rowData) => this.setState({ idList, deletePart: true });
-  handleSelectAllChange = (allIdList, isSelected, rowData) =>
-    this.setState({ allIdList, deleteAll: true });
+  handleSelectChange = (idList, rowData) => this.setState({ idList, userInfo: rowData });
+  handleSelectAllChange = (idList, isSelected, rowData) => this.setState({ idList });
 
   render() {
     const { pagination, loading, list } = this.props;
@@ -269,15 +248,23 @@ export default class User extends Component {
                 onClick={this.handleShowAddModal}
                 style={{ display: 'inLine-block' }}
               >
-                新增宝贝
+                新增
+              </Button>
+              <Button
+                icon="user-add"
+                type="primary"
+                onClick={this.handleEditUser}
+                style={{ display: 'inLine-block' }}
+              >
+                编辑
               </Button>
               <Button
                 icon="user-delete"
                 type="primary"
-                onClick={this.handleDeleteAll}
+                onClick={this.handleDeleteUser}
                 style={{ display: 'inLine-block' }}
               >
-                批量删除
+                删除
               </Button>
             </div>
           }
