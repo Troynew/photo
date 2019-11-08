@@ -140,7 +140,6 @@ class BasicLayout extends React.PureComponent {
 
   getLayoutStyle = () => {
     const { fixSiderbar, isMobile, collapsed, layout } = this.props;
-    console.log('basicLayout', this.props);
     if (fixSiderbar && layout !== 'topmenu' && !isMobile) {
       return {
         paddingLeft: collapsed ? '80px' : '256px',

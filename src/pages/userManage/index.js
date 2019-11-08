@@ -22,7 +22,6 @@ export default class User extends Component {
     userInfo: {},
     modalType: null,
     idList: [],
-    allIdList: [],
     deleteAll: false,
   };
 
@@ -65,6 +64,8 @@ export default class User extends Component {
     {
       title: '余额',
       dataIndex: 'balance',
+      showAll: true,
+      render: text => this.showTwoDemical(text),
     },
     {
       title: '家庭住址',
@@ -109,7 +110,6 @@ export default class User extends Component {
   }
 
   handleSearch = params => {
-    console.log('params', params);
     let query = {};
     for (let key in params) {
       if (key === 'solarBirthdayDate' && params[key] === null) continue;
@@ -134,7 +134,6 @@ export default class User extends Component {
   handleAddUser = userData => {
     const { babySex, lunarBirthdayDate, solarBirthdayDate } = userData;
     if (this.state.modalType === 'add') {
-      console.log('add===>', userData);
       this.props
         .dispatch({
           type: 'userManage/addUser',
@@ -159,8 +158,6 @@ export default class User extends Component {
         });
     } else {
       const { userInfo } = this.state;
-
-      console.log('fuckkk===>', userData, userInfo);
       this.props
         .dispatch({
           type: 'userManage/editUser',

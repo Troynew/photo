@@ -22,7 +22,6 @@ export default modelExtend(pageModel, {
     *queryUserList({ payload }, { call, put }) {
       const { pageSize, pageNum } = payload;
       const data = yield call(queryUserList, payload);
-      console.log('data', data);
 
       if (data.status) {
         yield put({

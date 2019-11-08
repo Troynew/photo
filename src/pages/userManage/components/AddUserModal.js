@@ -154,6 +154,11 @@ export default class AddUserModal extends PureComponent {
               ],
             })(<Input maxLength={11} placeholder="请输入" />)}
           </FormItem>
+          <FormItem {...modalFormItemLayout} label="余额">
+            {getFieldDecorator('balance', {
+              initialValue: modalType === 'edit' ? initData.balance : null,
+            })(<Input placeholder="请输入" />)}
+          </FormItem>
           <FormItem {...modalFormItemLayout} label="家庭住址">
             {getFieldDecorator('address', {
               initialValue: modalType === 'edit' ? initData.address : null,

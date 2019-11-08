@@ -20,7 +20,6 @@ class ListForm extends PureComponent {
   };
 
   _transformValues = values => {
-    console.log('values', values);
     // eslint-disable-next-line
     const _values = {};
     // eslint-disable-next-line
