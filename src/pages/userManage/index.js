@@ -74,6 +74,15 @@ export default class User extends Component {
       title: '客户来源',
       dataIndex: 'customerSource',
     },
+    {
+      title: '操作',
+      dataIndex: 'operate',
+      render: (text, record) => (
+        <NotBubbleBlock>
+          <a onClick={() => this.handleEditUser(record)}>编辑</a>
+        </NotBubbleBlock>
+      ),
+    },
   ];
 
   listFormData = [
@@ -101,15 +110,19 @@ export default class User extends Component {
 
   handleSearch = params => {
     console.log('params', params);
-    const { solarBirthdayDate } = params;
+    let query = {};
+    for (let key in params) {
+      if (key === 'solarBirthdayDate' && params[key] === null) continue;
+      if (key === 'solarBirthdayDate' && params[key] !== null) {
+        query[key] = moment(params[key]).format('YYYY-MM-DD');
+        continue;
+      }
+      query[key] = params[key];
+    }
     router.push({
       pathname: '/userManage',
       query: {
-        ...this.props.location.query,
-        ...params,
-        solarBirthdayDate: solarBirthdayDate
-          ? moment(solarBirthdayDate).format('YYYY-MM-DD')
-          : null,
+        ...query,
       },
     });
   };
@@ -179,7 +192,7 @@ export default class User extends Component {
   handleDeleteUser = () => {
     const { idList } = this.state;
     if (idList.length === 0) {
-      message.warn('请选择要删除的用户');
+      message.warn('请勾选要删除的用户');
       return;
     } else {
       this.props
@@ -197,17 +210,8 @@ export default class User extends Component {
     }
   };
 
-  handleEditUser = () => {
-    const { idList } = this.state;
-    if (idList.length === 0) {
-      message.warn('请选择一个会员');
-      return;
-    } else if (idList.length > 1) {
-      message.warn('只能选择一个会员');
-      return;
-    } else {
-      this.setState({ showAddModal: true, modalType: 'edit' });
-    }
+  handleEditUser = userInfo => {
+    this.setState({ showAddModal: true, modalType: 'edit', userInfo });
   };
 
   showTwoDemical = (value = 0) => {
@@ -258,14 +262,14 @@ export default class User extends Component {
               >
                 新增
               </Button>
-              <Button
+              {/* <Button
                 icon="user-add"
                 type="primary"
                 onClick={this.handleEditUser}
                 style={{ display: 'inLine-block' }}
               >
                 编辑
-              </Button>
+              </Button> */}
               <Button
                 icon="user-delete"
                 type="primary"

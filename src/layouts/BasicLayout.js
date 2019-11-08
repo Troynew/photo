@@ -10,8 +10,8 @@ import pathToRegexp from 'path-to-regexp';
 import Media from 'react-media';
 import { formatMessage } from 'umi/locale';
 import Authorized from '@/utils/Authorized';
-import logo from '../assets/logo.png';
-import logoTitle from '../assets/logoTitle.png';
+// import logo from '../assets/logo.png';
+// import logoTitle from '../assets/logoTitle.png';
 import Footer from './Footer';
 import Header from './Header';
 import Context from './MenuContext';
@@ -186,8 +186,8 @@ class BasicLayout extends React.PureComponent {
       <Layout>
         {isTop && !isMobile ? null : (
           <SiderMenu
-            logo={logo}
-            title={logoTitle}
+            // logo={logo}
+            // title={logoTitle}
             theme={navTheme}
             onCollapse={this.handleMenuCollapse}
             menuData={menuData}
@@ -204,7 +204,7 @@ class BasicLayout extends React.PureComponent {
           <Header
             menuData={menuData}
             handleMenuCollapse={this.handleMenuCollapse}
-            logo={logo}
+            // logo={logo}
             isMobile={isMobile}
             {...this.props}
           />

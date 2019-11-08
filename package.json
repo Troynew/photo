@@ -1,7 +1,7 @@
 {
-  "name": "jyh-pc",
+  "name": "pc",
   "version": "1.0.0",
-  "description": "Jyh PC application",
+  "description": "application",
   "private": true,
   "scripts": {
     "presite": "node ./scripts/generateMock.js && cd functions && npm install",

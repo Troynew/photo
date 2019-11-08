@@ -20,6 +20,7 @@ class ListForm extends PureComponent {
   };
 
   _transformValues = values => {
+    console.log('values', values);
     // eslint-disable-next-line
     const _values = {};
     // eslint-disable-next-line
@@ -27,10 +28,11 @@ class ListForm extends PureComponent {
       if ({}.hasOwnProperty.call(values, key)) {
         if (
           values[key] === undefined ||
-          values[key] === null ||
           values[key] === _UNITE_SELECT_ALL ||
           (Array.isArray(values[key]) && values[key].includes(_UNITE_SELECT_ALL)) ||
-          (typeof values[key] === 'object' && values[key]['key'] === _UNITE_SELECT_ALL)
+          (typeof values[key] === 'object' &&
+            values[key] !== null &&
+            values[key]['key'] === _UNITE_SELECT_ALL)
         )
           continue;
         // eslint-disable-next-line
@@ -74,7 +76,7 @@ class ListForm extends PureComponent {
       form: { setFieldsValue },
       onReset,
     } = this.props;
-    const { extend } = this.state;
+    // const { extend } = this.state;
     setFieldsValue(
       dataSource.reduce((prev, item) => {
         prev[item.name.replace(/\./g, '@')] = item.resetValue || resetValues[item.type];
