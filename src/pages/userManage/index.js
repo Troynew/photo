@@ -150,6 +150,12 @@ export default class User extends Component {
           payload: {
             ...userInfo,
             ...userData,
+            solarBirthdayDate: solarBirthdayDate
+              ? moment(solarBirthdayDate).format('YYYY-MM-DD')
+              : null,
+            lunarBirthdayDate: lunarBirthdayDate
+              ? moment(lunarBirthdayDate).format('YYYY-MM-DD')
+              : null,
             createBy: null,
             params: null,
             searchValue: null,
