@@ -15,4 +15,9 @@ export default {
   'menu.userManage.add': '新建会员',
   'menu.userManage.update': '编辑会员',
   'menu.userManage.preview': '查看会员',
+  'menu.productManage': '套餐管理',
+  'menu.productManage.list': '套餐列表',
+  'menu.productManage.add': '新建套餐',
+  'menu.productManage.update': '编辑套餐',
+  'menu.productManage.preview': '查看套餐',
 };

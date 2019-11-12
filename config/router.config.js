@@ -15,6 +15,11 @@ export default [
         component: './userManage',
       },
       {
+        path: '/productManage',
+        name: 'productManage',
+        component: './productManage',
+      },
+      {
         name: 'exception',
         path: '/exception',
         hideInMenu: true,

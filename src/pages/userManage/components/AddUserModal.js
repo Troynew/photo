@@ -96,26 +96,20 @@ export default class AddUserModal extends PureComponent {
               </RadioGroup>
             )}
           </FormItem>
+          <FormItem {...modalFormItemLayout} label="宝贝年龄">
+            {getFieldDecorator('babyAge', {
+              initialValue: modalType === 'edit' ? initData.babyAge : null,
+            })(<Input placeholder="请输入" />)}
+          </FormItem>
           <FormItem {...modalFormItemLayout} label="农历生日">
             {getFieldDecorator('lunarBirthdayDate', {
-              initialValue:
-                modalType === 'edit'
-                  ? initData.lunarBirthdayDate
-                    ? moment(initData.lunarBirthdayDate)
-                    : null
-                  : null,
-            })(<DatePicker format={'YYYY-MM-DD'} />)}
+              initialValue: modalType === 'edit' ? initData.lunarBirthdayDate : null,
+            })(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="新历生日">
             {getFieldDecorator('solarBirthdayDate', {
-              initialValue: modalType === 'edit' ? moment(initData.solarBirthdayDate) : null,
-              rules: [
-                {
-                  required: true,
-                  message: '请输入新历生日',
-                },
-              ],
-            })(<DatePicker format={'YYYY-MM-DD'} />)}
+              initialValue: modalType === 'edit' ? initData.solarBirthdayDate : null,
+            })(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="父亲">
             {getFieldDecorator('fatherName', {

@@ -2,24 +2,23 @@ import React, { Component } from 'react';
 import router from 'umi/router';
 import { connect } from 'dva';
 import { Button, message, Modal } from 'antd';
-import AddUserModal from './components/AddUserModal';
+import AddProductModal from './components/AddProductModal';
 
 import ListPageWrapper from '@/components/ListPageWrapper';
 import ListForm from '@/components/ListForm';
 import ListTable from '@/components/ListTable';
 import NotBubbleBlock from '@/components/NotBubbleBlock';
 import { _UNITE_SELECT_ALL } from '@/components/ListForm/utils/constants';
-import moment from 'moment';
 
-@connect(({ loading, userManage }) => ({
-  loading: loading.effects['userManage/queryUserList'],
-  list: userManage.list,
-  pagination: userManage.pagination,
+@connect(({ loading, productManage }) => ({
+  loading: loading.effects['productManage/queryProductList'],
+  list: productManage.list,
+  pagination: productManage.pagination,
 }))
-export default class User extends Component {
+export default class Product extends Component {
   state = {
     showAddModal: false,
-    userInfo: {},
+    productInfo: {},
     modalType: null,
     idList: [],
     deleteAll: false,
@@ -29,63 +28,32 @@ export default class User extends Component {
 
   columns = [
     {
-      title: '宝贝姓名',
-      dataIndex: 'babyName',
+      title: '产品',
+      dataIndex: 'product',
     },
     {
-      title: '性别',
-      dataIndex: 'babySex',
-      render: text => <span>{text === 1 ? '男' : '女'}</span>,
+      title: '价格',
+      dataIndex: 'price',
+      render: text => Number(text).toFixed(2),
     },
     {
-      title: '宝贝年龄',
-      dataIndex: 'babyAge',
+      title: '套餐名称',
+      dataIndex: 'name',
     },
     {
-      title: '农历生日',
-      dataIndex: 'lunarBirthdayDate',
+      title: '入册张数',
+      dataIndex: 'photoNum',
     },
     {
-      title: '新历生日',
-      dataIndex: 'solarBirthdayDate',
-    },
-    {
-      title: '父亲',
-      dataIndex: 'fatherName',
-    },
-    {
-      title: '父亲电话',
-      dataIndex: 'fatherPhoneNum',
-    },
-    {
-      title: '母亲',
-      dataIndex: 'motherName',
-    },
-    {
-      title: '母亲电话',
-      dataIndex: 'motherPhoneNum',
-    },
-    {
-      title: '余额',
-      dataIndex: 'balance',
-      showAll: true,
-      render: text => this.showTwoDemical(text),
-    },
-    {
-      title: '家庭住址',
-      dataIndex: 'address',
-    },
-    {
-      title: '客户来源',
-      dataIndex: 'customerSource',
+      title: '底片张数',
+      dataIndex: 'negativeNum',
     },
     {
       title: '操作',
       dataIndex: 'operate',
-      showAll: true,
       render: (text, record) => (
         <NotBubbleBlock>
-          <a onClick={() => this.handleEditUser(record)}>编辑</a>
+          <a onClick={() => this.handleEditProduct(record)}>编辑</a>
         </NotBubbleBlock>
       ),
     },
@@ -93,48 +61,30 @@ export default class User extends Component {
 
   listFormData = [
     {
-      name: 'babyName',
-      label: '宝贝名字',
+      name: 'name',
+      label: '套餐名称',
       type: 'input',
-      initialValue: this.query.babyName,
+      initialValue: this.query.name,
     },
     {
-      name: 'babyAge',
-      label: '宝贝年龄',
+      name: 'price',
+      label: '价格',
       type: 'input',
-      initialValue: this.query.babyAge,
-    },
-    {
-      name: 'solarBirthdayDate',
-      label: '新历生日',
-      type: 'datePicker',
-      initialValue: this.query.solarBirthdayDate,
-      format: 'YYYY-MM-DD',
+      initialValue: this.query.price,
     },
   ];
 
   componentDidMount() {
     router.push({
-      pathname: '/userManage',
+      pathname: '/productManage',
       query: { pageNum: '1', pageSize: '10' },
     });
   }
 
   handleSearch = params => {
-    let query = {};
-    for (let key in params) {
-      if (key === 'solarBirthdayDate' && params[key] === null) continue;
-      if (key === 'solarBirthdayDate' && params[key] !== null) {
-        query[key] = moment(params[key]).format('YYYY-MM-DD');
-        continue;
-      }
-      query[key] = params[key];
-    }
     router.push({
-      pathname: '/userManage',
-      query: {
-        ...query,
-      },
+      pathname: '/productManage',
+      query: params,
     });
   };
 
@@ -142,43 +92,41 @@ export default class User extends Component {
 
   handleCloseAddModal = () => this.setState({ showAddModal: false });
 
-  handleAddUser = userData => {
-    console.log('userData', userData);
+  handleAddProduct = productData => {
     if (this.state.modalType === 'add') {
       this.props
         .dispatch({
-          type: 'userManage/addUser',
-          payload: userData,
+          type: 'productManage/addProduct',
+          payload: productData,
         })
         .then(res => {
-          message.success('新增宝贝资料成功');
+          message.success('新增套餐成功');
           router.push({
-            pathname: '/userManage',
+            pathname: '/productManage',
             query: this.props.location.query,
           });
           this.setState({ showAddModal: false });
         });
     } else {
-      const { userInfo } = this.state;
+      const { productInfo } = this.state;
       this.props
         .dispatch({
-          type: 'userManage/editUser',
+          type: 'productManage/editProduct',
           payload: {
-            ...userInfo,
-            ...userData,
+            ...productInfo,
+            ...productData,
             createBy: null,
             params: null,
             searchValue: null,
             updateBy: null,
-            updataTime: null,
             createTime: null,
             updateTime: null,
           },
         })
         .then(res => {
-          message.success('修改宝贝资料成功');
+          message.success('修改套餐成功');
           router.push({
-            pathname: '/userManage',
+            pathname: '/productManage',
             query: this.props.location.query,
           });
           this.setState({ showAddModal: false });
@@ -186,28 +134,26 @@ export default class User extends Component {
     }
   };
 
-  handleDeleteUser = () => {
+  handleDeleteProduct = () => {
     const { idList } = this.state;
     const that = this;
     if (idList.length === 0) {
-      message.warn('请勾选要删除的用户');
+      message.warn('请勾选要删除的套餐');
       return;
     } else {
       Modal.confirm({
-        title: '确定删除宝贝资料嘛?',
+        title: '确定删除该套餐嘛?',
         content: '',
-        okText: '确定',
-        cancelText: '取消',
         onOk() {
           that.props
             .dispatch({
-              type: 'userManage/deleteUser',
+              type: 'productManage/deleteUser',
               payload: { ids: idList },
             })
             .then(res => {
               message.success('删除成功');
               router.push({
-                pathname: '/userManage',
+                pathname: '/productManage',
                 query: that.props.location.query,
               });
             });
@@ -217,15 +163,15 @@ export default class User extends Component {
     }
   };
 
-  handleEditUser = userInfo => {
-    this.setState({ showAddModal: true, modalType: 'edit', userInfo });
+  handleEditProduct = productInfo => {
+    this.setState({ showAddModal: true, modalType: 'edit', productInfo });
   };
 
   showTwoDemical = (value = 0) => {
     return Number(value).toFixed(2);
   };
 
-  handleSelectChange = (idList, rowData) => this.setState({ idList, userInfo: rowData });
+  handleSelectChange = (idList, rowData) => this.setState({ idList, productInfo: rowData });
   handleSelectAllChange = (idList, isSelected, rowData) => this.setState({ idList });
 
   render() {
@@ -244,8 +190,8 @@ export default class User extends Component {
     const modalProps = {
       showModal: this.state.showAddModal,
       onModalCancel: this.handleCloseAddModal,
-      onModalOK: this.handleAddUser,
-      initData: this.state.userInfo,
+      onModalOK: this.handleAddProduct,
+      initData: this.state.productInfo,
       modalType: this.state.modalType,
     };
 
@@ -262,25 +208,17 @@ export default class User extends Component {
           listOperatorInst={
             <div style={{ height: '32px' }}>
               <Button
-                icon="user-add"
+                icon="plus"
                 type="primary"
                 onClick={this.handleShowAddModal}
                 style={{ display: 'inLine-block' }}
               >
                 新增
               </Button>
-              {/* <Button
-                icon="user-add"
-                type="primary"
-                onClick={this.handleEditUser}
-                style={{ display: 'inLine-block' }}
-              >
-                编辑
-              </Button> */}
               <Button
-                icon="user-delete"
+                icon="minus"
                 type="primary"
-                onClick={this.handleDeleteUser}
+                onClick={this.handleDeleteProduct}
                 style={{ display: 'inLine-block' }}
               >
                 删除
@@ -289,7 +227,7 @@ export default class User extends Component {
           }
           listInst={<ListTable {...tableProps} />}
         />
-        <AddUserModal {...modalProps} />
+        <AddProductModal {...modalProps} />
       </>
     );
   }
