@@ -8,7 +8,7 @@ export async function queryUserList(params) {
 }
 
 export async function addUser(params) {
-  return request(`baby/basic/add`, {
+  return request(`photo/baby/add`, {
     method: 'POST',
     body: params,
     isFormData: true,
@@ -16,7 +16,7 @@ export async function addUser(params) {
 }
 
 export async function editUser(params) {
-  return request(`baby/basic/edit`, {
+  return request(`photo/baby/edit`, {
     method: 'PUT',
     body: params,
     isFormData: true,
@@ -24,7 +24,7 @@ export async function editUser(params) {
 }
 
 export async function deleteUser(params) {
-  return request(`baby/basic/delete`, {
+  return request(`photo/baby/delete`, {
     method: 'DELETE',
     body: params,
     isFormData: true,
