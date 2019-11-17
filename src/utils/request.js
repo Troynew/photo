@@ -102,8 +102,17 @@ export default function request(url, options = {}) {
         return response.json();
       })
       .then(res => {
+        console.log('url===>', url, res);
         if (res.code === 1) {
           return { status: false };
+        }
+        if (res.code === 0 && url === 'login') {
+          const token = new Date().getTime();
+          localStorage.setItem('token', token);
+        }
+        if (res.code === 0 && url === 'logout') {
+          localStorage.removeItem('token');
+          router.replace('/login');
         }
         const hasStatusKey = {}.hasOwnProperty.call(res, 'code');
         const isTrue = hasStatusKey ? res.code === 0 : false;

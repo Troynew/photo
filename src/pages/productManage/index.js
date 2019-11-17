@@ -143,11 +143,13 @@ export default class Product extends Component {
     } else {
       Modal.confirm({
         title: '确定删除该套餐嘛?',
+        okText: '确定',
+        cancelText: '取消',
         content: '',
         onOk() {
           that.props
             .dispatch({
-              type: 'productManage/deleteUser',
+              type: 'productManage/deleteProduct',
               payload: { ids: idList },
             })
             .then(res => {
@@ -171,7 +173,11 @@ export default class Product extends Component {
     return Number(value).toFixed(2);
   };
 
-  handleSelectChange = (idList, rowData) => this.setState({ idList, productInfo: rowData });
+  handleSelectChange = (idList, rowData) => {
+    console.log('row', idList, rowData);
+    this.setState({ idList, productInfo: rowData });
+  };
+
   handleSelectAllChange = (idList, isSelected, rowData) => this.setState({ idList });
 
   render() {

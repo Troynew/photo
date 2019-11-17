@@ -9,7 +9,13 @@ const pagesRoutesEntries = Object.entries(pagesRoutes);
 
 const Loading = ({ location }) => {
   if (location.pathname === '/') {
-    router.replace('./userManage');
+    const token = localStorage.getItem('token');
+    if (!token || Number(token) + 604800000 < new Date().getTime()) {
+      localStorage.removeItem('token');
+      router.replace('/login');
+    } else {
+      router.replace('/userManage');
+    }
   }
   return <Spin spinning={true} />;
 };

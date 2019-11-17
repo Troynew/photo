@@ -9,6 +9,7 @@ export default {
   'menu.account.center': '个人中心',
   'menu.account.settings': '个人设置',
   'menu.account.trigger': '触发报错',
+  'menu.login': '登录',
   'menu.account.logout': '退出登录',
   'menu.userManage': '客户管理',
   'menu.userManage.list': '客户列表',

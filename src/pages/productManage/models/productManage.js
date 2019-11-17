@@ -24,10 +24,14 @@ export default modelExtend(pageModel, {
       const data = yield call(queryProductList, payload);
 
       if (data.status) {
+        const list = data.rows.map(item => {
+          item.babyId = item.id;
+          return item;
+        });
         yield put({
           type: 'querySuccess',
           payload: {
-            list: data.rows,
+            list,
             pagination: { current: Number(pageNum), pageSize: Number(pageSize), total: data.total },
           },
         });

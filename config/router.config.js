@@ -10,6 +10,11 @@ export default [
         hideInMenu: true,
       },
       {
+        path: '/login',
+        component: './login',
+        hideInMenu: true,
+      },
+      {
         path: '/userManage',
         name: 'userManage',
         component: './userManage',
