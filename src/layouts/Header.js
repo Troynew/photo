@@ -54,6 +54,7 @@ class HeaderView extends PureComponent {
   };
 
   handleMenuClick = ({ key }) => {
+    console.log('key', key);
     const { dispatch } = this.props;
     if (key === 'userCenter') {
       router.push('/account/center');
@@ -69,7 +70,7 @@ class HeaderView extends PureComponent {
     }
     if (key === 'logout') {
       dispatch({
-        type: 'login/logout',
+        type: 'global/logout',
       });
     }
   };
@@ -137,10 +138,11 @@ class HeaderView extends PureComponent {
   }
 }
 
-export default connect(({ user, global, setting, loading }) => ({
+export default connect(({ login, global, setting, loading }) => ({
   // currentUser: user.currentUser,
   collapsed: global.collapsed,
   // fetchingNotices: loading.effects['global/fetchNotices'],
   notices: global.notices,
   setting,
+  login,
 }))(HeaderView);

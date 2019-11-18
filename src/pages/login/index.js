@@ -45,10 +45,11 @@ class LoginPage extends Component {
         type: 'login/login',
         payload: {
           ...values,
+          rememberMe: 'true',
         },
       }).then(res => {
         console.log('login===>', res);
-        if (res.code === 200) {
+        if (res.code === 0) {
           router.replace('/userManage');
         } else {
           message.warn('登录失败，请重新登录');

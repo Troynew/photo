@@ -1,3 +1,4 @@
+import { logout } from './../pages/login/service';
 export default {
   namespace: 'global',
 
@@ -15,7 +16,12 @@ export default {
     },
   },
 
-  effects: {},
+  effects: {
+    *logout({ payload }, { call }) {
+      const data = yield call(logout, payload);
+      if (data) return data;
+    },
+  },
 
   reducers: {
     changeLayoutCollapsed(state, { payload }) {

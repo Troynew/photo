@@ -110,9 +110,13 @@ export default function request(url, options = {}) {
           const token = new Date().getTime();
           localStorage.setItem('token', token);
         }
-        if (res.code === 0 && url === 'logout') {
+        if (res.code === 200 && url === 'logout') {
           localStorage.removeItem('token');
           router.replace('/login');
+        }
+        if (res.code === 500) {
+          localStorage.removeItem('token');
+          message.warn('登录失效，请重新登录', 2).then(() => router.replace('/login'));
         }
         const hasStatusKey = {}.hasOwnProperty.call(res, 'code');
         const isTrue = hasStatusKey ? res.code === 0 : false;
@@ -123,7 +127,7 @@ export default function request(url, options = {}) {
         return res;
       })
       .catch(e => {
-        const status = e.name;
+        const status = e.code;
         if (status === 401) {
           router.push('/exception/403');
         }
