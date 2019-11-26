@@ -5,7 +5,7 @@ import { Spin, message } from 'antd';
 const Loading = ({ location }) => {
   if (location.pathname === '/') {
     const token = localStorage.getItem('token');
-    if (!token || Number(token) + 604800000 < new Date().getTime()) {
+    if (!token) {
       localStorage.removeItem('token');
       message.warn('登录失效，请重新登录', 2).then(() => router.replace('/login'));
     } else {

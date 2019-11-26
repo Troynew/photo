@@ -17,27 +17,6 @@ class LoginPage extends Component {
     type: 'account',
   };
 
-  // onTabChange = type => {
-  //   this.setState({ type });
-  // };
-
-  // onGetCaptcha = () =>
-  //   new Promise((resolve, reject) => {
-  //     this.loginForm.validateFields(['mobile'], {}, (err, values) => {
-  //       if (err) {
-  //         reject(err);
-  //       } else {
-  //         const { dispatch } = this.props;
-  //         dispatch({
-  //           type: 'login/getCaptcha',
-  //           payload: values.mobile,
-  //         })
-  //           .then(resolve)
-  //           .catch(reject);
-  //       }
-  //     });
-  //   });
-
   handleSubmit = (err, values) => {
     if (!err) {
       const { dispatch } = this.props;
@@ -48,7 +27,6 @@ class LoginPage extends Component {
           rememberMe: 'true',
         },
       }).then(res => {
-        console.log('login===>', res);
         if (res.code === 0) {
           router.replace('/userManage');
         } else {
@@ -57,12 +35,6 @@ class LoginPage extends Component {
       });
     }
   };
-
-  // changeAutoLogin = e => {
-  //   this.setState({
-  //     // autoLogin: e.target.checked,
-  //   });
-  // };
 
   renderMessage = content => (
     <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />

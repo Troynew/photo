@@ -20,6 +20,7 @@ import SiderMenu from '@/components/SiderMenu';
 import config from '@/utils/config';
 
 import styles from './BasicLayout.less';
+import router from 'umi/router';
 
 const { Content } = Layout;
 const { systemName } = config;
@@ -90,6 +91,11 @@ class BasicLayout extends React.PureComponent {
     }
   }
 
+  componentWillUnmount() {
+    console.log('fuck');
+    localStorage.removeItem('token');
+  }
+
   getContext() {
     const { location, breadcrumbNameMap, permission } = this.props;
     return {
@@ -156,6 +162,18 @@ class BasicLayout extends React.PureComponent {
     });
   };
 
+  handleLogout = () => {
+    if (this.props.location.pathname === '/login') return;
+    this.props
+      .dispatch({
+        type: 'global/logout',
+      })
+      .then(() => {
+        localStorage.removeItem('token');
+        router.replace('/login');
+      });
+  };
+
   render() {
     const {
       user,
@@ -206,6 +224,7 @@ class BasicLayout extends React.PureComponent {
             // logo={logo}
             isMobile={isMobile}
             {...this.props}
+            onLogout={this.handleLogout}
           />
           <Content className={styles.content} style={contentStyle}>
             <Authorized

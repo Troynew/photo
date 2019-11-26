@@ -69,9 +69,10 @@ class HeaderView extends PureComponent {
       return;
     }
     if (key === 'logout') {
-      dispatch({
-        type: 'global/logout',
-      });
+      // dispatch({
+      //   type: 'global/logout',
+      // });
+      this.props.onLogout();
     }
   };
 
