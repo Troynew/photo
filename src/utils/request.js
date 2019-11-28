@@ -73,7 +73,6 @@ export default function request(url, options = {}) {
       options.headers = {
         ...options.headers,
         Accept: 'application/json',
-        Authorization: token,
       };
       const formData = new FormData();
       // eslint-disable-next-line
@@ -88,11 +87,14 @@ export default function request(url, options = {}) {
         ...options.headers,
         Accept: 'application/json',
         'Content-Type': 'application/json; charset=utf-8',
-        Authorization: token,
       };
       options.body = JSON.stringify(transformParams(params));
     }
   }
+  options.headers = {
+    ...options.headers,
+    Authorization: token,
+  };
   return (
     fetch(completeUrl, options)
       // .then(checkStatus)
