@@ -60,6 +60,7 @@ const transformParams = params => {
 export default function request(url, options = {}) {
   // eslint-disable-next-line
   const completeUrl = DOMAIN + url;
+  const token = localStorage.getItem('token');
   if (
     options.method === 'POST' ||
     options.method === 'PUT' ||
@@ -70,8 +71,9 @@ export default function request(url, options = {}) {
 
     if (options.isFormData) {
       options.headers = {
-        Accept: 'application/json',
         ...options.headers,
+        Accept: 'application/json',
+        Authorization: token,
       };
       const formData = new FormData();
       // eslint-disable-next-line
@@ -83,9 +85,10 @@ export default function request(url, options = {}) {
       options.body = formData;
     } else {
       options.headers = {
+        ...options.headers,
         Accept: 'application/json',
         'Content-Type': 'application/json; charset=utf-8',
-        ...options.headers,
+        Authorization: token,
       };
       options.body = JSON.stringify(transformParams(params));
     }
@@ -107,8 +110,7 @@ export default function request(url, options = {}) {
           return { status: false };
         }
         if (res.code === 0 && url === 'login') {
-          const token = new Date().getTime();
-          localStorage.setItem('token', token);
+          localStorage.setItem('token', res.token);
         }
         if (res.code === 200 && url === 'logout') {
           localStorage.removeItem('token');
@@ -143,4 +145,18 @@ export default function request(url, options = {}) {
         }
       })
   );
+}
+
+headers: {
+  Authorization: {
+    token: 'rw84658w4658w';
+  }
+}
+
+headers: {
+  Authorization: 'rw84658w4658w';
+}
+
+headers: {
+  token: '75683654377';
 }
