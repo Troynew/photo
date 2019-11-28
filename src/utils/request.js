@@ -114,7 +114,7 @@ export default function request(url, options = {}) {
         if (res.code === 0 && url === 'login') {
           localStorage.setItem('token', res.token);
         }
-        if (res.code === 200 && url === 'logout') {
+        if (res.code === 200 && url === 'out') {
           localStorage.removeItem('token');
           router.replace('/login');
         }
@@ -124,9 +124,9 @@ export default function request(url, options = {}) {
         }
         const hasStatusKey = {}.hasOwnProperty.call(res, 'code');
         const isTrue = hasStatusKey ? res.code === 0 : false;
-        if (!isTrue && !options.hideMessage) {
-          message.error(res.message);
-        }
+        // if (!isTrue && !options.hideMessage) {
+        //   message.error(res.message);
+        // }
         if (hasStatusKey) res.status = isTrue;
         return res;
       })
@@ -147,18 +147,4 @@ export default function request(url, options = {}) {
         }
       })
   );
-}
-
-headers: {
-  Authorization: {
-    token: 'rw84658w4658w';
-  }
-}
-
-headers: {
-  Authorization: 'rw84658w4658w';
-}
-
-headers: {
-  token: '75683654377';
 }

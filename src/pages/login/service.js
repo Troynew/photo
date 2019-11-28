@@ -9,7 +9,5 @@ export async function login(params) {
 }
 
 export async function logout(params) {
-  return request('logout', {
-    method: 'POST',
-  });
+  return request('out');
 }
