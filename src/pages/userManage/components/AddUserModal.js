@@ -70,7 +70,7 @@ export default class AddUserModal extends PureComponent {
 
     return (
       <Modal
-        title={modalType === 'add' ? '新建客户' : '编辑用户'}
+        title={modalType === 'add' ? '新增宝贝' : '编辑宝贝'}
         visible={showModal}
         onOk={this.handleModalOk}
         onCancel={onModalCancel}
@@ -140,11 +140,10 @@ export default class AddUserModal extends PureComponent {
           <FormItem {...modalFormItemLayout} label="母亲电话">
             {getFieldDecorator('motherPhoneNum', {
               initialValue: modalType === 'edit' ? initData.motherPhoneNum : null,
-              validator: this.validatePhone,
               rules: [
                 {
                   required: true,
-                  message: '请输入组别母亲或者父亲电话电话',
+                  message: '请输入母亲或者父亲电话',
                 },
                 {
                   validator: this.validatePhone2,

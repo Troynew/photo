@@ -25,6 +25,11 @@ export default [
         component: './productManage',
       },
       {
+        path: '/sysUserManage',
+        name: 'sysUserManage',
+        component: './sysUserManage',
+      },
+      {
         name: 'exception',
         path: '/exception',
         hideInMenu: true,

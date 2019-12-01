@@ -120,10 +120,10 @@ export default function request(url, options = {}) {
         }
         if (res.code === 500) {
           localStorage.removeItem('token');
-          message.warn('登录失效，请重新登录', 2).then(() => router.replace('/login'));
+          message.warn('登录失效，请重新登录', 1).then(() => router.replace('/login'));
         }
         const hasStatusKey = {}.hasOwnProperty.call(res, 'code');
-        const isTrue = hasStatusKey ? res.code === 0 : false;
+        const isTrue = hasStatusKey ? [0, 200].includes(res.code) : false;
         // if (!isTrue && !options.hideMessage) {
         //   message.error(res.message);
         // }

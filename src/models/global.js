@@ -1,4 +1,6 @@
-import { logout } from './../pages/login/service';
+import { logout, login } from './../services/common';
+import { setAuthority } from '@/utils/authority';
+import { reloadAuthorized } from '@/utils/Authorized';
 export default {
   namespace: 'global',
 
@@ -19,7 +21,23 @@ export default {
   effects: {
     *logout({ payload }, { call }) {
       const data = yield call(logout, payload);
-      if (data) return data;
+      if (data) {
+        setAuthority([]);
+        return data;
+      }
+    },
+
+    *login({ payload }, { call, put }) {
+      const data = yield call(login, payload);
+      if (data) {
+        setAuthority((data || {}).permission || []);
+        reloadAuthorized();
+        yield put({
+          type: 'fetchUserSuccess',
+          payload: { permission: data.permission },
+        });
+        return data;
+      }
     },
   },
 
@@ -30,9 +48,10 @@ export default {
         collapsed: payload,
       };
     },
+
     fetchUserSuccess(state, { payload }) {
-      const { user = {}, role, permission = [] } = payload;
-      return { ...state, user, role, permission, permissionLoaded: true };
+      const { permission = [] } = payload;
+      return { ...state, permission, permissionLoaded: true };
     },
   },
 };

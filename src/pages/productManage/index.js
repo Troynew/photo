@@ -74,12 +74,12 @@ export default class Product extends Component {
     },
   ];
 
-  componentDidMount() {
-    router.push({
-      pathname: '/productManage',
-      query: { pageNum: '1', pageSize: '10' },
-    });
-  }
+  // componentDidMount() {
+  //   router.push({
+  //     pathname: '/productManage',
+  //     query: { pageNum: '1', pageSize: '10' },
+  //   });
+  // }
 
   handleSearch = params => {
     router.push({

@@ -1,24 +1,25 @@
 import React, { Component } from 'react';
 import router from 'umi/router';
 import { connect } from 'dva';
-import { Button, message, Modal } from 'antd';
+import { Button, message, Modal, Switch } from 'antd';
 import AddUserModal from './components/AddUserModal';
+import UserAuthModal from './components/UserAuthModal';
 
 import ListPageWrapper from '@/components/ListPageWrapper';
 import ListForm from '@/components/ListForm';
 import ListTable from '@/components/ListTable';
 import NotBubbleBlock from '@/components/NotBubbleBlock';
 import { _UNITE_SELECT_ALL } from '@/components/ListForm/utils/constants';
-import moment from 'moment';
 
-@connect(({ loading, userManage }) => ({
-  loading: loading.effects['userManage/queryUserList'],
-  list: userManage.list,
-  pagination: userManage.pagination,
+@connect(({ loading, sysUserManage }) => ({
+  loading: loading.effects['sysUserManage/queryUserList'],
+  list: sysUserManage.list,
+  pagination: sysUserManage.pagination,
 }))
 export default class User extends Component {
   state = {
     showAddModal: false,
+    showAuthModal: false,
     userInfo: {},
     modalType: null,
     idList: [],
@@ -29,55 +30,58 @@ export default class User extends Component {
 
   columns = [
     {
-      title: '宝贝姓名',
-      dataIndex: 'babyName',
-    },
-    {
-      title: '性别',
-      dataIndex: 'babySex',
-      render: text => <span>{text === 1 ? '男' : '女'}</span>,
-    },
-    {
-      title: '宝贝年龄',
-      dataIndex: 'babyAge',
-    },
-    {
-      title: '农历生日',
-      dataIndex: 'lunarBirthdayDate',
-    },
-    {
-      title: '新历生日',
-      dataIndex: 'solarBirthdayDate',
-    },
-    {
-      title: '父亲',
-      dataIndex: 'fatherName',
-    },
-    {
-      title: '父亲电话',
-      dataIndex: 'fatherPhoneNum',
-    },
-    {
-      title: '母亲',
-      dataIndex: 'motherName',
-    },
-    {
-      title: '母亲电话',
-      dataIndex: 'motherPhoneNum',
-    },
-    {
-      title: '余额',
-      dataIndex: 'balance',
+      title: '角色',
+      dataIndex: 'userType',
       showAll: true,
-      render: text => this.showTwoDemical(text),
     },
     {
-      title: '家庭住址',
-      dataIndex: 'address',
+      title: '用户名',
+      dataIndex: 'loginName',
+      showAll: true,
     },
     {
-      title: '客户来源',
-      dataIndex: 'customerSource',
+      title: '密码',
+      dataIndex: 'password',
+      showAll: true,
+    },
+    {
+      title: '电话',
+      dataIndex: 'phoneNumber',
+      showAll: true,
+    },
+
+    {
+      title: '启用状态',
+      dataIndex: 'status',
+      showAll: true,
+      render: (text, record) => {
+        return (
+          <Switch
+            checkedChildren="启用"
+            unCheckedChildren="停用"
+            defaultChecked={text === 0 ? true : false}
+            onChange={() => this.handleSysUserStatusChange(record)}
+            // checked={text === 0 ? true : false}
+          />
+        );
+      },
+    },
+    {
+      title: '备注',
+      dataIndex: 'remark',
+      showAll: true,
+    },
+    {
+      title: '权限',
+      dataIndex: 'permission',
+      showAll: true,
+      render: (text = [], record) => (
+        <NotBubbleBlock>
+          <a onClick={() => this.handleShowAuthModal(record)}>
+            {text.length > 0 ? '编辑' : '新增'}
+          </a>
+        </NotBubbleBlock>
+      ),
     },
     {
       title: '操作',
@@ -93,67 +97,25 @@ export default class User extends Component {
 
   listFormData = [
     {
-      name: 'babyName',
-      label: '宝贝名字',
+      name: 'sysUserName',
+      label: '用户名',
       type: 'input',
-      initialValue: this.query.babyName,
-    },
-    {
-      name: 'babyAge',
-      label: '宝贝年龄',
-      type: 'input',
-      initialValue: this.query.babyAge,
-    },
-    {
-      name: 'solarBirthdayDate',
-      label: '新历生日',
-      type: 'datePicker',
-      initialValue: this.query.solarBirthdayDate,
-      format: 'YYYY-MM-DD',
+      initialValue: this.query.sysUserName,
     },
   ];
-
-  // componentDidMount() {
-  //   router.push({
-  //     pathname: '/userManage',
-  //     query: { pageNum: '1', pageSize: '10' },
-  //   });
-  // }
-
-  handleSearch = params => {
-    let query = {};
-    for (let key in params) {
-      if (key === 'solarBirthdayDate' && params[key] === null) continue;
-      if (key === 'solarBirthdayDate' && params[key] !== null) {
-        query[key] = moment(params[key]).format('YYYY-MM-DD');
-        continue;
-      }
-      query[key] = params[key];
-    }
-    router.push({
-      pathname: '/userManage',
-      query: {
-        ...query,
-      },
-    });
-  };
-
-  handleShowAddModal = () => this.setState({ showAddModal: true, modalType: 'add' });
-
-  handleCloseAddModal = () => this.setState({ showAddModal: false });
 
   handleAddUser = userData => {
     console.log('userData', userData);
     if (this.state.modalType === 'add') {
       this.props
         .dispatch({
-          type: 'userManage/addUser',
-          payload: userData,
+          type: 'sysUserManage/addUser',
+          payload: { ...userData, authority: [] },
         })
         .then(res => {
-          message.success('新增宝贝资料成功');
+          message.success('新增系统用户资料成功');
           router.push({
-            pathname: '/userManage',
+            pathname: '/sysUserManage',
             query: this.props.location.query,
           });
           this.setState({ showAddModal: false });
@@ -162,7 +124,7 @@ export default class User extends Component {
       const { userInfo } = this.state;
       this.props
         .dispatch({
-          type: 'userManage/editUser',
+          type: 'sysUserManage/editUser',
           payload: {
             ...userInfo,
             ...userData,
@@ -176,9 +138,9 @@ export default class User extends Component {
           },
         })
         .then(res => {
-          message.success('修改宝贝资料成功');
+          message.success('修改系统用户资料成功');
           router.push({
-            pathname: '/userManage',
+            pathname: '/sysUserManage',
             query: this.props.location.query,
           });
           this.setState({ showAddModal: false });
@@ -194,20 +156,20 @@ export default class User extends Component {
       return;
     } else {
       Modal.confirm({
-        title: '确定删除宝贝资料嘛?',
+        title: '确定删除系统用户资料嘛?',
         content: '',
         okText: '确定',
         cancelText: '取消',
         onOk() {
           that.props
             .dispatch({
-              type: 'userManage/deleteUser',
+              type: 'sysUserManage/deleteUser',
               payload: { ids: idList },
             })
             .then(res => {
               message.success('删除成功');
               router.push({
-                pathname: '/userManage',
+                pathname: '/sysUserManage',
                 query: that.props.location.query,
               });
             });
@@ -216,6 +178,62 @@ export default class User extends Component {
       });
     }
   };
+
+  handleSysUserStatusChange = userInfo => {
+    this.props
+      .dispatch({
+        type: 'sysUserManage/editUser',
+        payload: {
+          ...userInfo,
+          status: userInfo.status === 0 ? 1 : 0,
+          createBy: null,
+          params: null,
+          searchValue: null,
+          updateBy: null,
+          updataTime: null,
+          createTime: null,
+          updateTime: null,
+        },
+      })
+      .then(res => res.status && message.success('修改用户状态成功'));
+  };
+
+  handleEditUserAuth = newPermission => {
+    const { userInfo } = this.state;
+    this.props.dispatch(
+      {
+        type: 'sysUserManage/editUser',
+        payload: {
+          ...userInfo,
+          permission: newPermission,
+          createBy: null,
+          params: null,
+          searchValue: null,
+          updateBy: null,
+          updataTime: null,
+          createTime: null,
+          updateTime: null,
+        },
+      }.then(res => {
+        res.status && message.success('修改用户权限成功');
+      })
+    );
+  };
+
+  handleSearch = params => {
+    router.push({
+      pathname: '/sysUserManage',
+      query: params,
+    });
+  };
+
+  handleShowAddModal = () => this.setState({ showAddModal: true, modalType: 'add' });
+
+  handleShowAuthModal = userInfo => this.setState({ showAuthModal: true, userInfo });
+
+  handleCloseAddModal = () => this.setState({ showAddModal: false });
+
+  handleCloseAuthModal = () => this.setState({ showAuthModal: false });
 
   handleEditUser = userInfo => {
     this.setState({ showAddModal: true, modalType: 'edit', userInfo });
@@ -226,10 +244,24 @@ export default class User extends Component {
   };
 
   handleSelectChange = (idList, rowData) => this.setState({ idList, userInfo: rowData });
+
   handleSelectAllChange = (idList, isSelected, rowData) => this.setState({ idList });
 
   render() {
-    const { pagination, loading, list } = this.props;
+    const { pagination, loading } = this.props;
+
+    const list = [
+      {
+        babyId: 1,
+        loginName: '叮叮',
+        password: '123456',
+        userType: '店长',
+        status: 0,
+        remark: '大长腿',
+        phoneNumber: '18888888888',
+        permission: ['user'],
+      },
+    ];
 
     const tableProps = {
       columns: this.columns,
@@ -247,6 +279,13 @@ export default class User extends Component {
       onModalOK: this.handleAddUser,
       initData: this.state.userInfo,
       modalType: this.state.modalType,
+    };
+
+    const authModalProps = {
+      showModal: this.state.showAuthModal,
+      onModalCancel: this.handleCloseAuthModal,
+      onModalOK: this.handleEditUserAuth,
+      initData: this.state.userInfo,
     };
 
     return (
@@ -290,6 +329,7 @@ export default class User extends Component {
           listInst={<ListTable {...tableProps} />}
         />
         <AddUserModal {...modalProps} />
+        {this.state.showAuthModal && <UserAuthModal {...authModalProps} />}
       </>
     );
   }

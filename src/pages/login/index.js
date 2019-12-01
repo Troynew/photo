@@ -8,9 +8,8 @@ import router from 'umi/router';
 
 const { Tab, UserName, Password, Submit } = Login;
 
-@connect(({ login, loading }) => ({
-  login,
-  submitting: loading.effects['login/login'],
+@connect(({ loading }) => ({
+  submitting: loading.effects['global/login'],
 }))
 class LoginPage extends Component {
   state = {
@@ -21,7 +20,7 @@ class LoginPage extends Component {
     if (!err) {
       const { dispatch } = this.props;
       dispatch({
-        type: 'login/login',
+        type: 'global/login',
         payload: {
           ...values,
           rememberMe: 'true',
@@ -41,7 +40,7 @@ class LoginPage extends Component {
   );
 
   render() {
-    const { login, submitting } = this.props;
+    const { submitting } = this.props;
     const { type } = this.state;
     return (
       <div className={styles.main}>
