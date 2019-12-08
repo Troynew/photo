@@ -118,7 +118,7 @@ export default function request(url, options = {}) {
           localStorage.removeItem('token');
           router.replace('/login');
         }
-        if (res.code === 500) {
+        if (res.code === 501) {
           localStorage.removeItem('token');
           message.warn('登录失效，请重新登录', 1).then(() => router.replace('/login'));
         }

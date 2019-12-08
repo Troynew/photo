@@ -19,11 +19,6 @@ class index extends PureComponent {
     closeRowSelection: true,
   };
 
-  constructor(props) {
-    super(props);
-    this.uid = props.uid || 'babyId';
-  }
-
   state = {
     selectedTableRowKeys: [],
   };
@@ -45,12 +40,12 @@ class index extends PureComponent {
     const { onSelectChange } = this.props;
     let newSelectedTableRowKeys;
     if (selected) {
-      newSelectedTableRowKeys = selectedTableRowKeys.concat(record[this.uid]);
+      newSelectedTableRowKeys = selectedTableRowKeys.concat(record['id']);
       this.setState({
         selectedTableRowKeys: newSelectedTableRowKeys,
       });
     } else {
-      newSelectedTableRowKeys = selectedTableRowKeys.filter(key => key !== record[this.uid]);
+      newSelectedTableRowKeys = selectedTableRowKeys.filter(key => key !== record['id']);
       this.setState({
         selectedTableRowKeys: newSelectedTableRowKeys,
       });
@@ -62,7 +57,7 @@ class index extends PureComponent {
     const { selectedTableRowKeys } = this.state;
     const { onSelectAllChange } = this.props;
     let newSelectedTableRowKeys;
-    const changeRowKeys = changeRows.map(record => record[this.uid]);
+    const changeRowKeys = changeRows.map(record => record['id']);
     if (selected) {
       newSelectedTableRowKeys = selectedTableRowKeys.concat(changeRowKeys);
       this.setState({
@@ -79,7 +74,7 @@ class index extends PureComponent {
 
   handleClick = (e, record) => {
     const { selectedTableRowKeys } = this.state;
-    const selected = selectedTableRowKeys.some(key => key === record[this.uid]);
+    const selected = selectedTableRowKeys.some(key => key === record['id']);
     this.handleSelect(record, !selected);
   };
 
@@ -169,7 +164,7 @@ class index extends PureComponent {
       onRow: this.handleRowEvent,
       onChange: this.handleChange,
       ...restProps,
-      rowKey: record => record[this.uid],
+      rowKey: record => record['id'],
     };
     return <Table {...tableProps} />;
   }

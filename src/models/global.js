@@ -34,7 +34,7 @@ export default {
         reloadAuthorized();
         yield put({
           type: 'fetchUserSuccess',
-          payload: { permission: data.permission },
+          payload: { permission: data.permission || [] },
         });
         return data;
       }
@@ -50,8 +50,14 @@ export default {
     },
 
     fetchUserSuccess(state, { payload }) {
-      const { permission = [] } = payload;
-      return { ...state, permission, permissionLoaded: true };
+      const { permission } = payload;
+      let permissionArr = [];
+      if (typeof permission === 'string') {
+        permissionArr = (permission || '').split(',');
+      } else {
+        permissionArr = permission;
+      }
+      return { ...state, permission: permissionArr, permissionLoaded: true };
     },
   },
 };

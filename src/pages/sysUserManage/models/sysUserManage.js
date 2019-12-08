@@ -24,7 +24,7 @@ export default modelExtend(pageModel, {
       const data = yield call(queryUserList, payload);
       if (data.status) {
         const list = (data.rows || []).map(item => {
-          item.babyId = item.id;
+          item.id = item.userId;
           return item;
         });
         yield put({

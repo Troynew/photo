@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import { Button, message, Modal, Switch } from 'antd';
 import AddUserModal from './components/AddUserModal';
 import UserAuthModal from './components/UserAuthModal';
-
+import { Authorized } from '@/components/Authorized';
 import ListPageWrapper from '@/components/ListPageWrapper';
 import ListForm from '@/components/ListForm';
 import ListTable from '@/components/ListTable';
@@ -77,9 +77,11 @@ export default class User extends Component {
       showAll: true,
       render: (text = [], record) => (
         <NotBubbleBlock>
-          <a onClick={() => this.handleShowAuthModal(record)}>
-            {text.length > 0 ? '编辑' : '新增'}
-          </a>
+          <Authorized authority={'sysUser:permission'}>
+            <a onClick={() => this.handleShowAuthModal(record)}>
+              {(text || []).length > 0 ? '编辑' : '新增'}
+            </a>
+          </Authorized>
         </NotBubbleBlock>
       ),
     },
@@ -89,7 +91,9 @@ export default class User extends Component {
       showAll: true,
       render: (text, record) => (
         <NotBubbleBlock>
-          <a onClick={() => this.handleEditUser(record)}>编辑</a>
+          <Authorized authority={'sysUser:edit'}>
+            <a onClick={() => this.handleEditUser(record)}>编辑</a>
+          </Authorized>
         </NotBubbleBlock>
       ),
     },
@@ -167,11 +171,16 @@ export default class User extends Component {
               payload: { ids: idList },
             })
             .then(res => {
-              message.success('删除成功');
-              router.push({
-                pathname: '/sysUserManage',
-                query: that.props.location.query,
-              });
+              if (res.code === 0) {
+                message.success('删除成功');
+                router.push({
+                  pathname: '/sysUserManage',
+                  query: that.props.location.query,
+                });
+              } else {
+                message.warn(`${res.msg}`);
+                return;
+              }
             });
         },
         onCancel() {},
@@ -200,12 +209,12 @@ export default class User extends Component {
 
   handleEditUserAuth = newPermission => {
     const { userInfo } = this.state;
-    this.props.dispatch(
-      {
+    this.props
+      .dispatch({
         type: 'sysUserManage/editUser',
         payload: {
           ...userInfo,
-          permission: newPermission,
+          permission: String(newPermission),
           createBy: null,
           params: null,
           searchValue: null,
@@ -214,10 +223,10 @@ export default class User extends Component {
           createTime: null,
           updateTime: null,
         },
-      }.then(res => {
-        res.status && message.success('修改用户权限成功');
       })
-    );
+      .then(res => {
+        res.status && message.success('修改用户权限成功');
+      });
   };
 
   handleSearch = params => {
@@ -248,20 +257,20 @@ export default class User extends Component {
   handleSelectAllChange = (idList, isSelected, rowData) => this.setState({ idList });
 
   render() {
-    const { pagination, loading } = this.props;
+    const { pagination, loading, list } = this.props;
 
-    const list = [
-      {
-        babyId: 1,
-        loginName: '叮叮',
-        password: '123456',
-        userType: '店长',
-        status: 0,
-        remark: '大长腿',
-        phoneNumber: '18888888888',
-        permission: ['user'],
-      },
-    ];
+    // const list = [
+    //   {
+    //     babyId: 1,
+    //     loginName: '叮叮',
+    //     password: '123456',
+    //     userType: '店长',
+    //     status: 0,
+    //     remark: '大长腿',
+    //     phoneNumber: '18888888888',
+    //     permission: ['user'],
+    //   },
+    // ];
 
     const tableProps = {
       columns: this.columns,
@@ -300,14 +309,17 @@ export default class User extends Component {
           }
           listOperatorInst={
             <div style={{ height: '32px' }}>
-              <Button
-                icon="user-add"
-                type="primary"
-                onClick={this.handleShowAddModal}
-                style={{ display: 'inLine-block' }}
-              >
-                新增
-              </Button>
+              <Authorized authority={'sysUser:add'}>
+                <Button
+                  icon="user-add"
+                  type="primary"
+                  onClick={this.handleShowAddModal}
+                  style={{ display: 'inLine-block' }}
+                >
+                  新增
+                </Button>
+              </Authorized>
+
               {/* <Button
                 icon="user-add"
                 type="primary"
@@ -316,14 +328,16 @@ export default class User extends Component {
               >
                 编辑
               </Button> */}
-              <Button
-                icon="user-delete"
-                type="primary"
-                onClick={this.handleDeleteUser}
-                style={{ display: 'inLine-block' }}
-              >
-                删除
-              </Button>
+              <Authorized authority={'sysUser:delete'}>
+                <Button
+                  icon="user-delete"
+                  type="primary"
+                  onClick={this.handleDeleteUser}
+                  style={{ display: 'inLine-block' }}
+                >
+                  删除
+                </Button>
+              </Authorized>
             </div>
           }
           listInst={<ListTable {...tableProps} />}

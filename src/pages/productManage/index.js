@@ -3,7 +3,7 @@ import router from 'umi/router';
 import { connect } from 'dva';
 import { Button, message, Modal } from 'antd';
 import AddProductModal from './components/AddProductModal';
-
+import { Authorized } from '@/components/Authorized';
 import ListPageWrapper from '@/components/ListPageWrapper';
 import ListForm from '@/components/ListForm';
 import ListTable from '@/components/ListTable';
@@ -53,7 +53,9 @@ export default class Product extends Component {
       dataIndex: 'operate',
       render: (text, record) => (
         <NotBubbleBlock>
-          <a onClick={() => this.handleEditProduct(record)}>编辑</a>
+          <Authorized authority={'product:edit'}>
+            <a onClick={() => this.handleEditProduct(record)}>编辑</a>
+          </Authorized>
         </NotBubbleBlock>
       ),
     },
@@ -213,22 +215,26 @@ export default class Product extends Component {
           }
           listOperatorInst={
             <div style={{ height: '32px' }}>
-              <Button
-                icon="plus"
-                type="primary"
-                onClick={this.handleShowAddModal}
-                style={{ display: 'inLine-block' }}
-              >
-                新增
-              </Button>
-              <Button
-                icon="minus"
-                type="primary"
-                onClick={this.handleDeleteProduct}
-                style={{ display: 'inLine-block' }}
-              >
-                删除
-              </Button>
+              <Authorized authority={'product:add'}>
+                <Button
+                  icon="plus"
+                  type="primary"
+                  onClick={this.handleShowAddModal}
+                  style={{ display: 'inLine-block' }}
+                >
+                  新增
+                </Button>
+              </Authorized>
+              <Authorized authority={'product:delete'}>
+                <Button
+                  icon="minus"
+                  type="primary"
+                  onClick={this.handleDeleteProduct}
+                  style={{ display: 'inLine-block' }}
+                >
+                  删除
+                </Button>
+              </Authorized>
             </div>
           }
           listInst={<ListTable {...tableProps} />}

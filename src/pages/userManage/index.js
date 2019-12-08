@@ -3,7 +3,7 @@ import router from 'umi/router';
 import { connect } from 'dva';
 import { Button, message, Modal } from 'antd';
 import AddUserModal from './components/AddUserModal';
-
+import { Authorized } from '@/components/Authorized';
 import ListPageWrapper from '@/components/ListPageWrapper';
 import ListForm from '@/components/ListForm';
 import ListTable from '@/components/ListTable';
@@ -85,7 +85,9 @@ export default class User extends Component {
       showAll: true,
       render: (text, record) => (
         <NotBubbleBlock>
-          <a onClick={() => this.handleEditUser(record)}>编辑</a>
+          <Authorized authority={'user:edit'}>
+            <a onClick={() => this.handleEditUser(record)}>编辑</a>
+          </Authorized>
         </NotBubbleBlock>
       ),
     },
@@ -261,14 +263,17 @@ export default class User extends Component {
           }
           listOperatorInst={
             <div style={{ height: '32px' }}>
-              <Button
-                icon="user-add"
-                type="primary"
-                onClick={this.handleShowAddModal}
-                style={{ display: 'inLine-block' }}
-              >
-                新增
-              </Button>
+              <Authorized authority={'user:add'}>
+                <Button
+                  icon="user-add"
+                  type="primary"
+                  onClick={this.handleShowAddModal}
+                  style={{ display: 'inLine-block' }}
+                >
+                  新增
+                </Button>
+              </Authorized>
+
               {/* <Button
                 icon="user-add"
                 type="primary"
@@ -277,14 +282,16 @@ export default class User extends Component {
               >
                 编辑
               </Button> */}
-              <Button
-                icon="user-delete"
-                type="primary"
-                onClick={this.handleDeleteUser}
-                style={{ display: 'inLine-block' }}
-              >
-                删除
-              </Button>
+              <Authorized authority={'user:delete'}>
+                <Button
+                  icon="user-delete"
+                  type="primary"
+                  onClick={this.handleDeleteUser}
+                  style={{ display: 'inLine-block' }}
+                >
+                  删除
+                </Button>
+              </Authorized>
             </div>
           }
           listInst={<ListTable {...tableProps} />}

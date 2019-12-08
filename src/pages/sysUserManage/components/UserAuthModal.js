@@ -45,9 +45,10 @@ export default class AddUserAuthModal extends Component {
 
   componentDidMount() {
     const {
-      initData: { permission = [] },
+      initData: { permission = '' },
     } = this.props;
-    this.setState({ checkedKeys: permission });
+    const checkedKeys = permission.split(',') || [];
+    this.setState({ checkedKeys });
   }
 
   onCheck = e => {

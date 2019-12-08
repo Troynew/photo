@@ -18,16 +18,19 @@ export default [
         path: '/userManage',
         name: 'userManage',
         component: './userManage',
+        authority: 'user:list',
       },
       {
         path: '/productManage',
         name: 'productManage',
         component: './productManage',
+        authority: 'product:list',
       },
       {
         path: '/sysUserManage',
         name: 'sysUserManage',
         component: './sysUserManage',
+        authority: 'sysUser:list',
       },
       {
         name: 'exception',
