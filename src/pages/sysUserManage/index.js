@@ -31,8 +31,7 @@ export default class User extends Component {
   columns = [
     {
       title: '角色',
-      dataIndex: 'roles',
-      render: text => String(text),
+      dataIndex: 'roleName',
       showAll: true,
     },
     {
