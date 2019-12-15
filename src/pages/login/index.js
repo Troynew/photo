@@ -28,6 +28,8 @@ class LoginPage extends Component {
       }).then(res => {
         if (res.code === 0) {
           router.replace('/userManage');
+        } else if (res.code === 500 && res.msg === '用户已封禁，请联系管理员') {
+          message.warn('您的账号已被停用，请联系店长', 2);
         } else {
           message.warn(`${res.msg}`);
         }

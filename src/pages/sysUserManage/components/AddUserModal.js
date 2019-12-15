@@ -15,6 +15,7 @@ export default class AddUserModal extends PureComponent {
     } = this.props;
     validateFields((err, values) => {
       if (err) return;
+      values.userName = values.loginName;
       onModalOK(values);
     });
   };
@@ -67,6 +68,8 @@ export default class AddUserModal extends PureComponent {
       modalType,
     } = this.props;
 
+    console.log('initData', initData);
+
     return (
       <Modal
         title={modalType === 'add' ? '新建用户' : '编辑用户'}
@@ -79,8 +82,8 @@ export default class AddUserModal extends PureComponent {
       >
         <Form>
           <FormItem {...modalFormItemLayout} label="角色">
-            {getFieldDecorator('userType', {
-              initialValue: modalType === 'edit' ? initData.userType : null,
+            {getFieldDecorator('roleName', {
+              initialValue: modalType === 'edit' ? initData.roleName : null,
               rules: [{ required: true, message: '请输入角色' }],
             })(<Input placeholder="请输入" />)}
           </FormItem>
@@ -116,8 +119,8 @@ export default class AddUserModal extends PureComponent {
               rules: [{ required: true, message: '请选择启用状态' }],
             })(
               <RadioGroup>
-                <Radio value={0}>启用</Radio>
-                <Radio value={1}>禁用</Radio>
+                <Radio value={'0'}>启用</Radio>
+                <Radio value={'1'}>禁用</Radio>
               </RadioGroup>
             )}
           </FormItem>

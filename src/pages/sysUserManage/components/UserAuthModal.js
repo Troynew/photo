@@ -10,7 +10,7 @@ export default class AddUserAuthModal extends Component {
         title: '会员管理页面',
         key: 'user',
         children: [
-          { title: '列表', key: 'user:lsit' },
+          { title: '列表', key: 'user:list' },
           { title: '新增会员', key: 'user:add' },
           { title: '编辑会员', key: 'user:edit' },
           { title: '删除会员', key: 'user:delete' },
@@ -36,7 +36,7 @@ export default class AddUserAuthModal extends Component {
           { title: '删除用户', key: 'sysUser:add' },
           { title: '编辑用户', key: 'sysUser:edit' },
           { title: '删除用户', key: 'sysUser:delete' },
-          { title: '用户权限设置', key: ' sysUser:permission' },
+          { title: '用户权限设置', key: 'sysUser:permission' },
         ],
       },
     ],
@@ -47,7 +47,7 @@ export default class AddUserAuthModal extends Component {
     const {
       initData: { permission = '' },
     } = this.props;
-    const checkedKeys = permission.split(',') || [];
+    const checkedKeys = (permission || '').split(',').filter(item => item !== '') || [];
     this.setState({ checkedKeys });
   }
 

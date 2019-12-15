@@ -31,7 +31,8 @@ export default class User extends Component {
   columns = [
     {
       title: '角色',
-      dataIndex: 'userType',
+      dataIndex: 'roles',
+      render: text => String(text),
       showAll: true,
     },
     {
@@ -59,7 +60,7 @@ export default class User extends Component {
           <Switch
             checkedChildren="启用"
             unCheckedChildren="停用"
-            defaultChecked={text === 0 ? true : false}
+            defaultChecked={text === '0' ? true : false}
             onChange={() => this.handleSysUserStatusChange(record)}
             // checked={text === 0 ? true : false}
           />
@@ -114,7 +115,7 @@ export default class User extends Component {
       this.props
         .dispatch({
           type: 'sysUserManage/addUser',
-          payload: { ...userData, authority: [] },
+          payload: { ...userData, permission: '', userType: '00' },
         })
         .then(res => {
           message.success('新增系统用户资料成功');
@@ -139,6 +140,11 @@ export default class User extends Component {
             updataTime: null,
             createTime: null,
             updateTime: null,
+            loginIp: null,
+            loginDate: null,
+            roles: [],
+            roleIds: null,
+            postIds: null,
           },
         })
         .then(res => {
@@ -194,7 +200,7 @@ export default class User extends Component {
         type: 'sysUserManage/editUser',
         payload: {
           ...userInfo,
-          status: userInfo.status === 0 ? 1 : 0,
+          status: userInfo.status === '0' ? '1' : '0',
           createBy: null,
           params: null,
           searchValue: null,
@@ -202,6 +208,11 @@ export default class User extends Component {
           updataTime: null,
           createTime: null,
           updateTime: null,
+          loginIp: null,
+          loginDate: null,
+          roles: [],
+          roleIds: null,
+          postIds: null,
         },
       })
       .then(res => res.status && message.success('修改用户状态成功'));
@@ -222,6 +233,11 @@ export default class User extends Component {
           updataTime: null,
           createTime: null,
           updateTime: null,
+          loginIp: null,
+          loginDate: null,
+          roles: [],
+          roleIds: null,
+          postIds: null,
         },
       })
       .then(res => {
@@ -258,19 +274,6 @@ export default class User extends Component {
 
   render() {
     const { pagination, loading, list } = this.props;
-
-    // const list = [
-    //   {
-    //     babyId: 1,
-    //     loginName: '叮叮',
-    //     password: '123456',
-    //     userType: '店长',
-    //     status: 0,
-    //     remark: '大长腿',
-    //     phoneNumber: '18888888888',
-    //     permission: ['user'],
-    //   },
-    // ];
 
     const tableProps = {
       columns: this.columns,

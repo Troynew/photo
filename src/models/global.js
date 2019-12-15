@@ -30,7 +30,7 @@ export default {
     *login({ payload }, { call, put }) {
       const data = yield call(login, payload);
       if (data) {
-        setAuthority((data || {}).permission || []);
+        setAuthority(((data || {}).permission || '').split(','));
         reloadAuthorized();
         yield put({
           type: 'fetchUserSuccess',
@@ -57,6 +57,7 @@ export default {
       } else {
         permissionArr = permission;
       }
+      console.log('permission', permissionArr);
       return { ...state, permission: permissionArr, permissionLoaded: true };
     },
   },
