@@ -28,7 +28,6 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "braft-editor": "^2.2.5",
     "classnames": "^2.2.6",
-    "clipboard": "^2.0.4",
     "dva": "^2.4.0",
     "dva-logger": "^1.0.0",
     "dva-model-extend": "^0.1.2",

@@ -194,11 +194,12 @@ export default class User extends Component {
   };
 
   handleSysUserStatusChange = userInfo => {
+    const { id, ...rest } = userInfo;
     this.props
       .dispatch({
         type: 'sysUserManage/editUser',
         payload: {
-          ...userInfo,
+          ...rest,
           status: userInfo.status === '0' ? '1' : '0',
           createBy: null,
           params: null,
@@ -253,21 +254,28 @@ export default class User extends Component {
 
   handleShowAddModal = () => this.setState({ showAddModal: true, modalType: 'add' });
 
-  handleShowAuthModal = userInfo => this.setState({ showAuthModal: true, userInfo });
+  handleShowAuthModal = userInfo => {
+    const { id, ...rest } = userInfo;
+    this.setState({ showAuthModal: true, userInfo: rest });
+  };
 
   handleCloseAddModal = () => this.setState({ showAddModal: false });
 
   handleCloseAuthModal = () => this.setState({ showAuthModal: false });
 
   handleEditUser = userInfo => {
-    this.setState({ showAddModal: true, modalType: 'edit', userInfo });
+    const { id, ...rest } = userInfo;
+    this.setState({ showAddModal: true, modalType: 'edit', userInfo: rest });
   };
 
   showTwoDemical = (value = 0) => {
     return Number(value).toFixed(2);
   };
 
-  handleSelectChange = (idList, rowData) => this.setState({ idList, userInfo: rowData });
+  handleSelectChange = (idList, rowData) => {
+    const { id, ...rest } = rowData;
+    this.setState({ idList, userInfo: rest });
+  };
 
   handleSelectAllChange = (idList, isSelected, rowData) => this.setState({ idList });
 

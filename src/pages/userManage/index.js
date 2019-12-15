@@ -220,14 +220,18 @@ export default class User extends Component {
   };
 
   handleEditUser = userInfo => {
-    this.setState({ showAddModal: true, modalType: 'edit', userInfo });
+    const { id, ...rest } = userInfo;
+    this.setState({ showAddModal: true, modalType: 'edit', userInfo: rest });
   };
 
   showTwoDemical = (value = 0) => {
     return Number(value).toFixed(2);
   };
 
-  handleSelectChange = (idList, rowData) => this.setState({ idList, userInfo: rowData });
+  handleSelectChange = (idList, rowData) => {
+    const { id, ...rest } = rowData;
+    this.setState({ idList, userInfo: rest });
+  };
   handleSelectAllChange = (idList, isSelected, rowData) => this.setState({ idList });
 
   render() {
