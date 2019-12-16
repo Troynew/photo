@@ -1,6 +1,7 @@
-import { logout, login } from './../services/common';
+import { logout, login, editPassword } from './../services/common';
 import { setAuthority } from '@/utils/authority';
 import { reloadAuthorized } from '@/utils/Authorized';
+import { rule } from 'postcss';
 export default {
   namespace: 'global',
 
@@ -38,6 +39,11 @@ export default {
         });
         return data;
       }
+    },
+
+    *editPassword({ payload }, { call }) {
+      const data = yield call(editPassword, payload);
+      if (data) return data;
     },
   },
 

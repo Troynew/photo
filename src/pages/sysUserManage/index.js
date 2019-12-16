@@ -61,7 +61,7 @@ export default class User extends Component {
             unCheckedChildren="停用"
             defaultChecked={text === '0' ? true : false}
             onChange={() => this.handleSysUserStatusChange(record)}
-            // checked={text === 0 ? true : false}
+            checked={text === '0' ? true : false}
           />
         );
       },
@@ -101,10 +101,10 @@ export default class User extends Component {
 
   listFormData = [
     {
-      name: 'sysUserName',
+      name: 'loginName',
       label: '用户名',
       type: 'input',
-      initialValue: this.query.sysUserName,
+      initialValue: this.query.loginName,
     },
   ];
 
@@ -125,25 +125,15 @@ export default class User extends Component {
           this.setState({ showAddModal: false });
         });
     } else {
-      const { userInfo } = this.state;
+      const {
+        userInfo: { userId },
+      } = this.state;
       this.props
         .dispatch({
           type: 'sysUserManage/editUser',
           payload: {
-            ...userInfo,
             ...userData,
-            createBy: null,
-            params: null,
-            searchValue: null,
-            updateBy: null,
-            updataTime: null,
-            createTime: null,
-            updateTime: null,
-            loginIp: null,
-            loginDate: null,
-            roles: [],
-            roleIds: null,
-            postIds: null,
+            userId,
           },
         })
         .then(res => {
@@ -165,7 +155,7 @@ export default class User extends Component {
       return;
     } else {
       Modal.confirm({
-        title: '确定删除系统用户资料嘛?',
+        title: '确定删除选中的系统用户资料嘛?',
         content: '',
         okText: '确定',
         cancelText: '取消',
@@ -194,54 +184,68 @@ export default class User extends Component {
   };
 
   handleSysUserStatusChange = userInfo => {
-    const { id, ...rest } = userInfo;
+    const {
+      userId,
+      status,
+      loginName,
+      password,
+      remark,
+      roleName,
+      phoneNumber,
+      permission,
+    } = userInfo;
     this.props
       .dispatch({
         type: 'sysUserManage/editUser',
         payload: {
-          ...rest,
-          status: userInfo.status === '0' ? '1' : '0',
-          createBy: null,
-          params: null,
-          searchValue: null,
-          updateBy: null,
-          updataTime: null,
-          createTime: null,
-          updateTime: null,
-          loginIp: null,
-          loginDate: null,
-          roles: [],
-          roleIds: null,
-          postIds: null,
-        },
-      })
-      .then(res => res.status && message.success('修改用户状态成功'));
-  };
-
-  handleEditUserAuth = newPermission => {
-    const { userInfo } = this.state;
-    this.props
-      .dispatch({
-        type: 'sysUserManage/editUser',
-        payload: {
-          ...userInfo,
-          permission: String(newPermission),
-          createBy: null,
-          params: null,
-          searchValue: null,
-          updateBy: null,
-          updataTime: null,
-          createTime: null,
-          updateTime: null,
-          loginIp: null,
-          loginDate: null,
-          roles: [],
-          roleIds: null,
-          postIds: null,
+          userId,
+          status: status === '0' ? '1' : '0',
+          loginName,
+          password,
+          remark,
+          roleName,
+          phoneNumber,
+          permission,
         },
       })
       .then(res => {
-        res.status && message.success('修改用户权限成功');
+        if (res.status) {
+          message.success('修改用户状态成功');
+          router.push({
+            pathname: '/sysUserManage',
+            query: this.props.location.query,
+          });
+        }
+      });
+  };
+
+  handleEditUserAuth = newPermission => {
+    const {
+      userInfo: { userId, roleName, loginName, password, status, phoneNumber, remark },
+    } = this.state;
+    this.props
+      .dispatch({
+        type: 'sysUserManage/editUser',
+        payload: {
+          userId,
+          permission: String(newPermission),
+          roleName,
+          loginName,
+          password,
+          status,
+          phoneNumber,
+          remark,
+        },
+      })
+      .then(res => {
+        if (res.status) {
+          this.setState({ showAuthModal: false });
+          message.success('修改用户权限成功');
+          router.push({
+            pathname: '/sysUserManage',
+            query: this.props.location.query,
+          });
+        }
       });
   };
 

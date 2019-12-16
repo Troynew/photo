@@ -37,11 +37,12 @@ export default class BaseMenu extends PureComponent {
    * @memberof SiderMenu
    */
   getNavMenuItems = (menusData, parent) => {
+    const permission = localStorage.getItem('i-baby');
     if (!menusData) {
       return [];
     }
     return menusData
-      .filter(item => item.name && !item.hideInMenu)
+      .filter(item => item.name && !item.hideInMenu && permission.includes(item.authority))
       .map(item => this.getSubMenuOrItem(item, parent))
       .filter(item => item);
   };
@@ -155,6 +156,7 @@ export default class BaseMenu extends PureComponent {
       };
     }
     const { handleOpenChange, style, menuData } = this.props;
+    console.log('menu', menuData);
     const cls = classNames(className, {
       'top-nav-menu': mode === 'horizontal',
     });

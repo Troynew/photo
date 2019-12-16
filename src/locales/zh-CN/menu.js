@@ -11,6 +11,7 @@ export default {
   'menu.account.trigger': '触发报错',
   'menu.login': '登录',
   'menu.account.logout': '退出登录',
+  'menu.password.edit': '修改密码',
   'menu.userManage': '客户管理',
   'menu.userManage.list': '客户列表',
   'menu.userManage.add': '新增会员',

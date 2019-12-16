@@ -10,6 +10,10 @@ const GlobalHeaderRight = ({ user, onMenuClick, theme }) => {
         <Icon type="logout" />
         <FormattedMessage id="menu.account.logout" defaultMessage="logout" />
       </Menu.Item>
+      <Menu.Item key="editPassword">
+        <Icon type="edit" />
+        <FormattedMessage id="menu.password.edit" defaultMessage="logout" />
+      </Menu.Item>
     </Menu>
   );
   let className = styles.right;
