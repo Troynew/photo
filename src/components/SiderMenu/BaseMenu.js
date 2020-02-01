@@ -37,7 +37,7 @@ export default class BaseMenu extends PureComponent {
    * @memberof SiderMenu
    */
   getNavMenuItems = (menusData, parent) => {
-    const permission = localStorage.getItem('i-baby');
+    const permission = localStorage.getItem('i-baby') || [];
     if (!menusData) {
       return [];
     }
