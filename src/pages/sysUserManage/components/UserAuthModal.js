@@ -39,6 +39,17 @@ export default class AddUserAuthModal extends Component {
           { title: '用户权限设置', key: 'sysUser:permission' },
         ],
       },
+
+      {
+        title: '订单管理页面',
+        key: 'order',
+        children: [
+          { title: '列表', key: 'order:list' },
+          { title: '删除订单', key: 'order:add' },
+          { title: '编辑订单', key: 'order:edit' },
+          { title: '删除订单', key: 'order:delete' },
+        ],
+      },
     ],
     checkedKeys: [],
   };

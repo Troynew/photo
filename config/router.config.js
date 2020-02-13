@@ -33,6 +33,12 @@ export default [
         authority: 'sysUser:list',
       },
       {
+        path: '/orderManage',
+        name: 'orderManage',
+        component: './orderManage',
+        authority: 'order:list',
+      },
+      {
         name: 'exception',
         path: '/exception',
         hideInMenu: true,

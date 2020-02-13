@@ -3,10 +3,19 @@ import PropTypes from 'prop-types';
 import { Form, DatePicker } from 'antd';
 import moment from 'moment';
 
-import { propTypes, defaultProps, formItemLayout, modalFormItemLayout } from '../utils/props';
+import { propTypes, defaultProps, modalFormItemLayout } from '../utils/props';
 
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
+
+const formItemLayout = {
+  labelCol: {
+    span: 8,
+  },
+  wrapperCol: {
+    span: 24,
+  },
+};
 
 const RangePickerItem = ({ config, innerModal, getFieldDecorator }) => (
   <FormItem label={config.label} {...(innerModal ? modalFormItemLayout : formItemLayout)}>

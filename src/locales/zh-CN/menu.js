@@ -27,4 +27,9 @@ export default {
   'menu.sysUserManage.add': '新增系统用户',
   'menu.sysUserManage.update': '编辑系统用户',
   'menu.sysUserManage.preview': '查看系统用户',
+  'menu.orderManage': '订单管理',
+  'menu.orderManage.list': '订单列表',
+  'menu.orderManage.add': '新增订单',
+  'menu.orderManage.update': '编辑订单',
+  'menu.orderManage.preview': '查看订单',
 };
