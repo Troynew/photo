@@ -30,3 +30,17 @@ export async function deleteUser(params) {
     isFormData: true,
   });
 }
+
+export async function queryProductList(params) {
+  return request(`photo/package/list${stringify(params, { addQueryPrefix: true })}`, {
+    method: 'GET',
+  });
+}
+
+export async function addOrder(params) {
+  return request(`photo/order/add`, {
+    method: 'POST',
+    body: params,
+    isFormData: true,
+  });
+}

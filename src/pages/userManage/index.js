@@ -3,6 +3,7 @@ import router from 'umi/router';
 import { connect } from 'dva';
 import { Button, message, Modal } from 'antd';
 import AddUserModal from './components/AddUserModal';
+import AddOrder from './components/addOrder';
 import { Authorized } from '@/components/Authorized';
 import ListPageWrapper from '@/components/ListPageWrapper';
 import ListForm from '@/components/ListForm';
@@ -19,10 +20,12 @@ import moment from 'moment';
 export default class User extends Component {
   state = {
     showAddModal: false,
+    showAddOrderModal: false,
     userInfo: {},
     modalType: null,
     idList: [],
     deleteAll: false,
+    productList: [],
   };
 
   query = this.props.location.query;
@@ -31,6 +34,11 @@ export default class User extends Component {
     {
       title: '宝贝姓名',
       dataIndex: 'babyName',
+      render: (text, record) => (
+        <NotBubbleBlock>
+          <a onClick={() => this.handleViewUserOrder(record)}>{text}</a>
+        </NotBubbleBlock>
+      ),
     },
     {
       title: '性别',
@@ -86,7 +94,10 @@ export default class User extends Component {
       render: (text, record) => (
         <NotBubbleBlock>
           <Authorized authority={'user:edit'}>
-            <a onClick={() => this.handleEditUser(record)}>编辑</a>
+            <a onClick={() => this.handleEditUser(record)} style={{ marginRight: '10px' }}>
+              编辑
+            </a>
+            <a onClick={() => this.handleAddOrder(record)}>新增订单</a>
           </Authorized>
         </NotBubbleBlock>
       ),
@@ -144,6 +155,8 @@ export default class User extends Component {
 
   handleCloseAddModal = () => this.setState({ showAddModal: false });
 
+  handleCloseAddOrderModal = () => this.setState({ showAddOrderModal: false });
+
   handleAddUser = userData => {
     console.log('userData', userData);
     if (this.state.modalType === 'add') {
@@ -188,6 +201,50 @@ export default class User extends Component {
     }
   };
 
+  handleAddOrderOk = orderData => {
+    console.log('orderData', orderData);
+    const {
+      userInfo: {
+        id,
+        babyName,
+        babyAge,
+        babySex,
+        solarBirthdayDate,
+        lunarBirthdayDate,
+        fatherName,
+        motherName,
+        fatherPhoneNum,
+        motherPhoneNum,
+      },
+    } = this.state;
+    this.props
+      .dispatch({
+        type: 'userManage/addOrder',
+        payload: {
+          ...orderData,
+          babyName,
+          babyAge,
+          babySex,
+          solarBirthdayDate,
+          lunarBirthdayDate,
+          fatherName,
+          fatherPhoneNum,
+          motherName,
+          motherPhoneNum,
+        },
+      })
+      .then(res => {
+        message.success('新增订单成功');
+        router.push({
+          pathname: '/orderManage',
+          query: {
+            userId: id,
+          },
+        });
+        this.setState({ showAddOrderModal: false });
+      });
+  };
+
   handleDeleteUser = () => {
     const { idList } = this.state;
     const that = this;
@@ -224,6 +281,17 @@ export default class User extends Component {
     this.setState({ showAddModal: true, modalType: 'edit', userInfo: rest });
   };
 
+  handleAddOrder = userInfo => {
+    this.props
+      .dispatch({
+        type: 'userManage/queryProductList',
+        payload: { pageSize: '100', pageNum: '1' },
+      })
+      .then(data => {
+        data && this.setState({ showAddOrderModal: true, userInfo, productList: data });
+      });
+  };
+
   showTwoDemical = (value = 0) => {
     return Number(value).toFixed(2);
   };
@@ -232,10 +300,16 @@ export default class User extends Component {
     const { id, ...rest } = rowData;
     this.setState({ idList, userInfo: rest });
   };
+
   handleSelectAllChange = (idList, isSelected, rowData) => this.setState({ idList });
 
+  handleViewUserOrder = userData => {
+    const { id } = userData;
+    router.push({ pathname: '/orderManage', query: { userId: id } });
+  };
+
   render() {
-    const { pagination, loading, list } = this.props;
+    const { pagination, loading, list, productList } = this.props;
 
     const tableProps = {
       columns: this.columns,
@@ -253,6 +327,14 @@ export default class User extends Component {
       onModalOK: this.handleAddUser,
       initData: this.state.userInfo,
       modalType: this.state.modalType,
+    };
+
+    const orderModalProps = {
+      showModal: this.state.showAddOrderModal,
+      onModalCancel: this.handleCloseAddOrderModal,
+      onModalOK: this.handleAddOrderOk,
+      initData: this.state.userInfo,
+      productList: this.state.productList,
     };
 
     return (
@@ -301,6 +383,7 @@ export default class User extends Component {
           listInst={<ListTable {...tableProps} />}
         />
         <AddUserModal {...modalProps} />
+        <AddOrder {...orderModalProps} />
       </>
     );
   }

@@ -294,7 +294,7 @@ export default class Order extends Component {
           }
           listOperatorInst={
             <div style={{ height: '32px' }}>
-              <Authorized authority={'order:add'}>
+              {/* <Authorized authority={'order:add'}>
                 <Button
                   icon="user-add"
                   type="primary"
@@ -303,7 +303,7 @@ export default class Order extends Component {
                 >
                   新增
                 </Button>
-              </Authorized>
+              </Authorized> */}
 
               {/* <Button
                 icon="user-add"

@@ -12,7 +12,7 @@ const Loading = ({ location }) => {
       router.replace('/userManage');
     }
   }
-  return <Spin spinning={true} />;
+  return <Spin spinning />;
 };
 
 export default Loading;

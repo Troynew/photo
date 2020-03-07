@@ -52,6 +52,7 @@ export default class AddUserAuthModal extends Component {
       },
     ],
     checkedKeys: [],
+    expandedKeys: ['user', 'sysUser', 'product', 'order'],
   };
 
   componentDidMount() {
@@ -63,7 +64,6 @@ export default class AddUserAuthModal extends Component {
   }
 
   onCheck = e => {
-    console.log('check', e);
     this.setState({ checkedKeys: e });
   };
 
@@ -81,35 +81,40 @@ export default class AddUserAuthModal extends Component {
 
   handleModalOk = () => {
     const { checkedKeys } = this.state;
+    const { onModalOK } = this.props;
     if (checkedKeys.length === 0) {
       message.warn('请至少选择一个权限');
-      return;
     } else {
-      this.props.onModalOK(checkedKeys);
+      onModalOK(checkedKeys);
     }
   };
 
+  handleExpandedChange = data => {
+    console.log('expended', data);
+    this.setState({ expandedKeys: data });
+  };
+
   render() {
-    const { onModalCancel, showModal, initData } = this.props;
-    const { permissionTree } = this.state;
-    console.log('this.state', this.state);
+    const { onModalCancel, showModal } = this.props;
+    const { permissionTree, checkedKeys, expandedKeys } = this.state;
     return (
       <Modal
         title="设置用户权限"
         visible={showModal}
         onOk={this.handleModalOk}
         onCancel={onModalCancel}
-        maskClosable={true}
+        maskClosable
         okText="保存"
         destroyOnClose
       >
         <Tree
           checkable
-          autoExpandParent
+          autoExpandParent={false}
           onCheck={this.onCheck}
-          checkedKeys={this.state.checkedKeys}
-          expandedKeys={['user', 'sysUser', 'product']}
-          defaultCheckedKeys={this.state.checkedKeys}
+          checkedKeys={checkedKeys}
+          expandedKeys={expandedKeys}
+          defaultCheckedKeys={checkedKeys}
+          onExpand={this.handleExpandedChange}
         >
           {this.renderTreeNodes(permissionTree)}
         </Tree>
