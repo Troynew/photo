@@ -5,6 +5,12 @@ import config from '@/utils/config';
 const { modalFormItemLayout } = config;
 const FormItem = Form.Item;
 const Option = Select.Option;
+const payTypeList = [
+  { key: 1, value: '微信' },
+  { key: 2, value: '支付宝' },
+  { key: 3, value: '现金' },
+  { key: 4, value: '其他' },
+];
 
 @Form.create()
 export default class AddUserModal extends PureComponent {
@@ -44,7 +50,7 @@ export default class AddUserModal extends PureComponent {
       >
         <Form>
           <FormItem {...modalFormItemLayout} label="套餐名称">
-            {getFieldDecorator('productId', {
+            {getFieldDecorator('packageId', {
               initialValue: null,
               rules: [{ required: true, message: '请选择套餐类型' }],
             })(
@@ -58,13 +64,13 @@ export default class AddUserModal extends PureComponent {
             )}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="实付金额">
-            {getFieldDecorator('payedMoney', {
+            {getFieldDecorator('paidMoney', {
               initialValue: null,
               rules: [{ required: true, message: '请输入实付金额' }],
             })(<Input type="number" placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="未付金额">
-            {getFieldDecorator('unPyaMoney', {
+            {getFieldDecorator('unPaidMoney', {
               initialValue: null,
               rules: [{ required: true, message: '请输入未付金额' }],
             })(<Input type="number" placeholder="请输入" />)}
@@ -72,8 +78,16 @@ export default class AddUserModal extends PureComponent {
           <FormItem {...modalFormItemLayout} label="付款方式">
             {getFieldDecorator('payType', {
               initialValue: null,
-              rules: [{ required: true, message: '请输入付款方式' }],
-            })(<Input placeholder="请输入" />)}
+              rules: [{ required: true, message: '请选择付款方式' }],
+            })(
+              <Select placeholder="请选择">
+                {payTypeList.map(item => (
+                  <Option key={String(item.key)} value={item.key}>
+                    {item.value}
+                  </Option>
+                ))}
+              </Select>
+            )}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="备注">
             {getFieldDecorator('remark')(<Input placeholder="请输入" />)}

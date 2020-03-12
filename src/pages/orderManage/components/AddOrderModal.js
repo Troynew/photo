@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import { Form, Input, Modal, Radio } from 'antd';
+import { Form, Input, Modal, Select } from 'antd';
 import config from '@/utils/config';
 
 const { modalFormItemLayout } = config;
 const FormItem = Form.Item;
-const RadioGroup = Radio.Group;
+const Option = Select.Option;
 
 @Form.create()
 export default class AddOrderModal extends PureComponent {
@@ -65,6 +65,7 @@ export default class AddOrderModal extends PureComponent {
       showModal,
       initData,
       modalType,
+      productList,
     } = this.props;
 
     return (
@@ -78,48 +79,26 @@ export default class AddOrderModal extends PureComponent {
         destroyOnClose
       >
         <Form>
-          <FormItem {...modalFormItemLayout} label="家长姓名">
-            {getFieldDecorator('babyName', {
-              initialValue: modalType === 'edit' ? initData.babyName : null,
-            })(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem {...modalFormItemLayout} label="宝贝姓名">
-            {getFieldDecorator('babyName', {
-              initialValue: modalType === 'edit' ? initData.babyName : null,
-            })(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem {...modalFormItemLayout} label="农历生日">
-            {getFieldDecorator('lunarBirthdayDate', {
-              initialValue: modalType === 'edit' ? initData.lunarBirthdayDate : null,
-            })(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem {...modalFormItemLayout} label="新历生日">
-            {getFieldDecorator('solarBirthdayDate', {
-              initialValue: modalType === 'edit' ? initData.solarBirthdayDate : null,
-            })(<Input placeholder="请输入" />)}
-          </FormItem>
-          <FormItem {...modalFormItemLayout} label="联系电话">
-            {getFieldDecorator('phoneNum', {
-              initialValue: modalType === 'edit' ? initData.phoneNum : null,
-              rules: [
-                {
-                  validator: this.validatePhone1,
-                },
-              ],
-            })(<Input maxLength={11} placeholder="请输入" />)}
-          </FormItem>
           <FormItem {...modalFormItemLayout} label="套餐名称">
-            {getFieldDecorator('productName', {
+            {getFieldDecorator('packageId', {
               initialValue: modalType === 'edit' ? initData.productName : null,
-            })(<Input placeholder="请输入" />)}
+            })(
+              <Select placeholder="请选择">
+                {productList.map(item => (
+                  <Option key={String(item.id)} value={String(item.id)}>
+                    {item.name}
+                  </Option>
+                ))}
+              </Select>
+            )}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="实付金额">
-            {getFieldDecorator('payedMoney', {
+            {getFieldDecorator('paidMoney', {
               initialValue: modalType === 'edit' ? initData.payedMoney : null,
             })(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="未付金额">
-            {getFieldDecorator('unPayMoney', {
+            {getFieldDecorator('unPaidMoney', {
               initialValue: modalType === 'edit' ? initData.unPayMoney : null,
             })(<Input placeholder="请输入" />)}
           </FormItem>

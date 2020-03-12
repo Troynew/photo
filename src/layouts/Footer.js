@@ -26,6 +26,12 @@ const FooterView = () => (
           href: '/',
           blankTarget: true,
         },
+        {
+          key: 'filing',
+          title: '闽IPC备 19023656',
+          href: 'https://www.beian.miit.gov.cn',
+          blankTarget: true,
+        },
       ]}
       copyright={
         <Fragment>

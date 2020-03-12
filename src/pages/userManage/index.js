@@ -204,33 +204,14 @@ export default class User extends Component {
   handleAddOrderOk = orderData => {
     console.log('orderData', orderData);
     const {
-      userInfo: {
-        id,
-        babyName,
-        babyAge,
-        babySex,
-        solarBirthdayDate,
-        lunarBirthdayDate,
-        fatherName,
-        motherName,
-        fatherPhoneNum,
-        motherPhoneNum,
-      },
+      userInfo: { id },
     } = this.state;
     this.props
       .dispatch({
         type: 'userManage/addOrder',
         payload: {
           ...orderData,
-          babyName,
-          babyAge,
-          babySex,
-          solarBirthdayDate,
-          lunarBirthdayDate,
-          fatherName,
-          fatherPhoneNum,
-          motherName,
-          motherPhoneNum,
+          babyId: id,
         },
       })
       .then(res => {
@@ -309,7 +290,7 @@ export default class User extends Component {
   };
 
   render() {
-    const { pagination, loading, list, productList } = this.props;
+    const { pagination, loading, list } = this.props;
 
     const tableProps = {
       columns: this.columns,

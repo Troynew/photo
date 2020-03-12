@@ -23,6 +23,7 @@ export default class Order extends Component {
     modalType: null,
     idList: [],
     deleteAll: false,
+    productList: [],
   };
 
   query = this.props.location.query;
@@ -30,7 +31,7 @@ export default class Order extends Component {
   columns = [
     {
       title: '家长姓名',
-      dataIndex: 'parentName',
+      dataIndex: 'motherName',
     },
     {
       title: '宝贝姓名',
@@ -50,19 +51,20 @@ export default class Order extends Component {
     },
     {
       title: '套餐名称',
-      dataIndex: 'productName',
+      dataIndex: 'packageName',
     },
     {
       title: '实付金额',
-      dataIndex: 'payedMoney',
+      dataIndex: 'paidMoney',
     },
     {
       title: '未付金额',
-      dataIndex: 'unPayMoney',
+      dataIndex: 'unPaidMoney',
     },
     {
       title: '付款方式',
       dataIndex: 'payType',
+      render: text => this.showPayType(text),
     },
     {
       title: '余额',
@@ -90,10 +92,10 @@ export default class Order extends Component {
 
   listFormData = [
     {
-      name: 'parentName',
+      name: 'motherName',
       label: '家长姓名',
       type: 'input',
-      initialValue: this.query.parentName,
+      initialValue: this.query.motherName,
     },
     {
       name: 'babyName',
@@ -102,7 +104,7 @@ export default class Order extends Component {
       initialValue: this.query.babyName,
     },
     {
-      name: 'phoneNum',
+      name: 'motherPhoneNum',
       label: '电话',
       type: 'input',
       initialValue: this.query.phoneNum,
@@ -129,18 +131,12 @@ export default class Order extends Component {
     },
   ];
 
-  // componentDidMount() {
-  //   router.push({
-  //     pathname: '/orderManage',
-  //     query: { pageNum: '1', pageSize: '10' },
-  //   });
-  // }
-
   handleSearch = params => {
     console.log('params', params);
     let query = {};
     for (let key in params) {
-      if (key === 'solarBirthdayDate' && params[key].length === 0) continue;
+      if (key === 'solarBirthdayDate' && params[key] === null && (params[key] || []).length === 0)
+        continue;
       if (key === 'solarBirthdayDate' && params[key].length === 2) {
         query[key] =
           moment(params[key][0]).format('YYYY-MM-DD') +
@@ -148,7 +144,8 @@ export default class Order extends Component {
           moment(params[key][1]).format('YYYY-MM-DD');
         continue;
       }
-      if (key === 'lunarBirthdayDate' && params[key].length === 0) continue;
+      if (key === 'lunarBirthdayDate' && params[key] === null && (params[key] || []).length === 0)
+        continue;
       if (key === 'lunarBirthdayDate' && params[key].length === 2) {
         query[key] =
           moment(params[key][0]).format('YYYY-MM-DD') +
@@ -248,7 +245,20 @@ export default class Order extends Component {
 
   handleEditOrder = orderInfo => {
     const { id, ...rest } = orderInfo;
-    this.setState({ showAddModal: true, modalType: 'edit', orderInfo: rest });
+    this.props
+      .dispatch({
+        type: 'userManage/queryProductList',
+        payload: { pageSize: '100', pageNum: '1' },
+      })
+      .then(data => {
+        data &&
+          this.setState({
+            showAddModal: true,
+            orderInfo: rest,
+            productList: data,
+            modalType: 'edit',
+          });
+      });
   };
 
   showTwoDemical = (value = 0) => {
@@ -259,7 +269,23 @@ export default class Order extends Component {
     const { id, ...rest } = rowData;
     this.setState({ idList, orderInfo: rest });
   };
+
   handleSelectAllChange = (idList, isSelected, rowData) => this.setState({ idList });
+
+  showPayType = type => {
+    switch (type) {
+      case 1:
+        return '微信';
+      case 2:
+        return '支付宝';
+      case 3:
+        return '现金';
+      case 4:
+        return '其他';
+      default:
+        return '其他';
+    }
+  };
 
   render() {
     const { pagination, loading, list } = this.props;
@@ -280,6 +306,7 @@ export default class Order extends Component {
       onModalOK: this.handleAddOrder,
       initData: this.state.orderInfo,
       modalType: this.state.modalType,
+      productList: this.state.productList,
     };
 
     return (
