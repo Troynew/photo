@@ -65,12 +65,12 @@ export default modelExtend(pageModel, {
     *queryProductList({ payload }, { call, put }) {
       const data = yield call(queryProductList, payload);
       if (data.status) {
-        yield put({
-          type: 'querySuccess',
-          payload: {
-            productList: data.rows,
-          },
-        });
+        // yield put({
+        //   type: 'querySuccess',
+        //   payload: {
+        //     productList: data.rows,
+        //   },
+        // });
         return data.rows;
       }
     },

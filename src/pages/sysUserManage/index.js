@@ -72,27 +72,18 @@ export default class User extends Component {
       showAll: true,
     },
     {
-      title: '权限',
-      dataIndex: 'permission',
-      showAll: true,
-      render: (text = [], record) => (
-        <NotBubbleBlock>
-          <Authorized authority={'sysUser:permission'}>
-            <a onClick={() => this.handleShowAuthModal(record)}>
-              {(text || []).length > 0 ? '编辑' : '新增'}
-            </a>
-          </Authorized>
-        </NotBubbleBlock>
-      ),
-    },
-    {
       title: '操作',
       dataIndex: 'operate',
       showAll: true,
       render: (text, record) => (
         <NotBubbleBlock>
           <Authorized authority={'sysUser:edit'}>
-            <a onClick={() => this.handleEditUser(record)}>编辑</a>
+            <a onClick={() => this.handleEditUser(record)} style={{ marginRight: '10px' }}>
+              编辑
+            </a>
+          </Authorized>
+          <Authorized authority={'sysUser:permission'}>
+            <a onClick={() => this.handleShowAuthModal(record)}>权限分配</a>
           </Authorized>
         </NotBubbleBlock>
       ),

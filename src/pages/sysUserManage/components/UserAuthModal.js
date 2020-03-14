@@ -14,6 +14,7 @@ export default class AddUserAuthModal extends Component {
           { title: '新增会员', key: 'user:add' },
           { title: '编辑会员', key: 'user:edit' },
           { title: '删除会员', key: 'user:delete' },
+          { title: '新增订单', key: 'order:add' },
         ],
       },
 
@@ -33,7 +34,7 @@ export default class AddUserAuthModal extends Component {
         key: 'sysUser',
         children: [
           { title: '列表', key: 'sysUser:list' },
-          { title: '删除用户', key: 'sysUser:add' },
+          { title: '新增用户', key: 'sysUser:add' },
           { title: '编辑用户', key: 'sysUser:edit' },
           { title: '删除用户', key: 'sysUser:delete' },
           { title: '用户权限设置', key: 'sysUser:permission' },
@@ -45,7 +46,6 @@ export default class AddUserAuthModal extends Component {
         key: 'order',
         children: [
           { title: '列表', key: 'order:list' },
-          { title: '删除订单', key: 'order:add' },
           { title: '编辑订单', key: 'order:edit' },
           { title: '删除订单', key: 'order:delete' },
         ],

@@ -55,7 +55,7 @@ export default class AddOrderModal extends PureComponent {
   };
 
   showTwoDemical = (value = 0) => {
-    return Number(value).toFixed(2);
+    return Number(value).toFixed(2) || 0;
   };
 
   render() {
@@ -67,6 +67,8 @@ export default class AddOrderModal extends PureComponent {
       modalType,
       productList,
     } = this.props;
+
+    console.log('props', this.props);
 
     return (
       <Modal
@@ -81,11 +83,11 @@ export default class AddOrderModal extends PureComponent {
         <Form>
           <FormItem {...modalFormItemLayout} label="套餐名称">
             {getFieldDecorator('packageId', {
-              initialValue: modalType === 'edit' ? initData.productName : null,
+              initialValue: modalType === 'edit' ? initData.packageId : null,
             })(
               <Select placeholder="请选择">
                 {productList.map(item => (
-                  <Option key={String(item.id)} value={String(item.id)}>
+                  <Option key={String(item.id)} value={item.id}>
                     {item.name}
                   </Option>
                 ))}
@@ -94,12 +96,12 @@ export default class AddOrderModal extends PureComponent {
           </FormItem>
           <FormItem {...modalFormItemLayout} label="实付金额">
             {getFieldDecorator('paidMoney', {
-              initialValue: modalType === 'edit' ? initData.payedMoney : null,
+              initialValue: modalType === 'edit' ? initData.paidMoney : null,
             })(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="未付金额">
             {getFieldDecorator('unPaidMoney', {
-              initialValue: modalType === 'edit' ? initData.unPayMoney : null,
+              initialValue: modalType === 'edit' ? initData.unPaidMoney : null,
             })(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="余额">

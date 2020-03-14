@@ -97,6 +97,8 @@ export default class User extends Component {
             <a onClick={() => this.handleEditUser(record)} style={{ marginRight: '10px' }}>
               编辑
             </a>
+          </Authorized>
+          <Authorized authority={'order:add'}>
             <a onClick={() => this.handleAddOrder(record)}>新增订单</a>
           </Authorized>
         </NotBubbleBlock>
@@ -291,6 +293,7 @@ export default class User extends Component {
 
   render() {
     const { pagination, loading, list } = this.props;
+    console.log('list===>', list);
 
     const tableProps = {
       columns: this.columns,
