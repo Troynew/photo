@@ -1,6 +1,6 @@
 import modelExtend from 'dva-model-extend';
 import { pageModel } from '@/utils/model';
-import { queryOrderList, addOrder, editOrder, deleteOrder } from '../service';
+import { queryOrderList, addOrder, editOrder, deleteOrder, queryProductList } from '../service';
 
 export default modelExtend(pageModel, {
   namespace: 'orderManage',
@@ -50,6 +50,18 @@ export default modelExtend(pageModel, {
     *deleteOrder({ payload }, { call }) {
       const data = yield call(deleteOrder, payload);
       if (data.status) return data;
+    },
+    *queryProductList({ payload }, { call, put }) {
+      const data = yield call(queryProductList, payload);
+      if (data.status) {
+        // yield put({
+        //   type: 'querySuccess',
+        //   payload: {
+        //     productList: data.rows,
+        //   },
+        // });
+        return data.rows;
+      }
     },
   },
 });

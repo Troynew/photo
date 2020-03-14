@@ -9,7 +9,8 @@ const payTypeList = [
   { key: 1, value: '微信' },
   { key: 2, value: '支付宝' },
   { key: 3, value: '现金' },
-  { key: 4, value: '其他' },
+  { key: 4, value: '卡扣' },
+  { key: 5, value: 'POS' },
 ];
 
 @Form.create()

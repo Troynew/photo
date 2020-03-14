@@ -8,6 +8,7 @@ import ListPageWrapper from '@/components/ListPageWrapper';
 import ListForm from '@/components/ListForm';
 import ListTable from '@/components/ListTable';
 import NotBubbleBlock from '@/components/NotBubbleBlock';
+import Contract from '@/components/Contract';
 import { _UNITE_SELECT_ALL } from '@/components/ListForm/utils/constants';
 import moment from 'moment';
 
@@ -83,7 +84,12 @@ export default class Order extends Component {
       render: (text, record) => (
         <NotBubbleBlock>
           <Authorized authority={'order:edit'}>
-            <a onClick={() => this.handleEditOrder(record)}>编辑</a>
+            <a onClick={() => this.handleEditOrder(record)} style={{ marginRight: '10px' }}>
+              编辑
+            </a>
+          </Authorized>
+          <Authorized authority={'order:edit'}>
+            <a onClick={() => this.handlePrintContract(record)}>打印合同</a>
           </Authorized>
         </NotBubbleBlock>
       ),
@@ -130,6 +136,20 @@ export default class Order extends Component {
       format: 'YYYY-MM-DD',
     },
   ];
+
+  componentDidMount() {
+    console.log('this.props', this.props);
+    this.props
+      .dispatch({
+        type: 'orderManage/queryProductList',
+        payload: { pageSize: '100', pageNum: '1' },
+      })
+      .then(data => {
+        this.setState({
+          productList: data,
+        });
+      });
+  }
 
   handleSearch = params => {
     console.log('params', params);
@@ -245,20 +265,11 @@ export default class Order extends Component {
 
   handleEditOrder = orderInfo => {
     const { id, ...rest } = orderInfo;
-    this.props
-      .dispatch({
-        type: 'userManage/queryProductList',
-        payload: { pageSize: '100', pageNum: '1' },
-      })
-      .then(data => {
-        data &&
-          this.setState({
-            showAddModal: true,
-            orderInfo: rest,
-            productList: data,
-            modalType: 'edit',
-          });
-      });
+    this.setState({
+      showAddModal: true,
+      orderInfo: rest,
+      modalType: 'edit',
+    });
   };
 
   showTwoDemical = (value = 0) => {
@@ -281,10 +292,18 @@ export default class Order extends Component {
       case 3:
         return '现金';
       case 4:
-        return '其他';
-      default:
-        return '其他';
+        return '卡扣';
+      case 5:
+        return 'POS';
     }
+  };
+
+  handlePrintContract = userData => {
+    const oldHtml = window.document.body.innerHTML;
+    window.document.body.innerHTML = window.document.getElementById('contract').innerHTML;
+    window.print();
+    window.document.body.innerHTML = oldHtml;
+    // window.location.reload();
   };
 
   render() {
@@ -355,6 +374,7 @@ export default class Order extends Component {
           listInst={<ListTable {...tableProps} />}
         />
         <AddOrderModal {...modalProps} />
+        <Contract />
       </>
     );
   }

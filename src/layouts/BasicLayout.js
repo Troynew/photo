@@ -93,7 +93,7 @@ class BasicLayout extends React.PureComponent {
 
   componentWillUnmount() {
     console.log('fuck');
-    localStorage.removeItem('token');
+    // localStorage.removeItem('token');
   }
 
   getContext() {

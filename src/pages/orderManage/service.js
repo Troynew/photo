@@ -30,3 +30,9 @@ export async function deleteOrder(params) {
     isFormData: true,
   });
 }
+
+export async function queryProductList(params) {
+  return request(`photo/package/list${stringify(params, { addQueryPrefix: true })}`, {
+    method: 'GET',
+  });
+}
