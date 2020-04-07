@@ -11,6 +11,7 @@ const payTypeList = [
   { key: 3, value: '现金' },
   { key: 4, value: '卡扣' },
   { key: 5, value: 'POS' },
+  { key: 6, value: '网付' },
 ];
 
 @Form.create()

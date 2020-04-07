@@ -12,6 +12,13 @@ import NotBubbleBlock from '@/components/NotBubbleBlock';
 import { _UNITE_SELECT_ALL } from '@/components/ListForm/utils/constants';
 import moment from 'moment';
 
+const orderStatus = {
+  0: '未跟进',
+  1: '洽谈中',
+  2: '已签单',
+  3: '无意向',
+};
+
 @connect(({ loading, userManage }) => ({
   loading: loading.effects['userManage/queryUserList'],
   list: userManage.list,
@@ -86,6 +93,11 @@ export default class User extends Component {
     {
       title: '客户来源',
       dataIndex: 'customerSource',
+    },
+    {
+      title: '订单状态',
+      dataIndex: 'orderStatus',
+      render: text => orderStatus[`${text}`],
     },
     {
       title: '操作',

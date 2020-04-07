@@ -1,11 +1,19 @@
 import React, { PureComponent } from 'react';
-import { Form, Input, Modal, Radio, DatePicker } from 'antd';
+import { Form, Input, Modal, Radio, DatePicker, Select } from 'antd';
 import moment from 'moment';
 import config from '@/utils/config';
 
 const { modalFormItemLayout } = config;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
+const Option = Select.Option;
+
+orderStatus = [
+  { key: 0, value: '未跟进' },
+  { key: 1, value: '洽谈中' },
+  { key: 2, value: '已签单' },
+  { key: 3, value: '无意向' },
+];
 
 @Form.create()
 export default class AddUserModal extends PureComponent {
@@ -165,6 +173,21 @@ export default class AddUserModal extends PureComponent {
             {getFieldDecorator('customerSource', {
               initialValue: modalType === 'edit' ? initData.customerSource : null,
             })(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem {...modalFormItemLayout} label="订单状态">
+            {getFieldDecorator('orderStatus', {
+              initialValue: modalType === 'edit' ? initData.orderStatus : null,
+            })(
+              <Select placeholder="请选择">
+                {orderStatus.map(item => {
+                  return (
+                    <Option key={item.key} value={item.key}>
+                      {item.value}
+                    </Option>
+                  );
+                })}
+              </Select>
+            )}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="备注">
             {getFieldDecorator('remark', {

@@ -61,6 +61,7 @@ export default class Order extends Component {
     {
       title: '未付金额',
       dataIndex: 'unPaidMoney',
+      onCell: () => ({ style: { color: 'red' } }),
     },
     {
       title: '付款方式',
@@ -295,6 +296,8 @@ export default class Order extends Component {
         return '卡扣';
       case 5:
         return 'POS';
+      case 6:
+        return '网付';
     }
   };
 
