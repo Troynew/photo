@@ -12,7 +12,7 @@ import NotBubbleBlock from '@/components/NotBubbleBlock';
 import { _UNITE_SELECT_ALL } from '@/components/ListForm/utils/constants';
 import moment from 'moment';
 
-const orderStatus = {
+const babyStatus = {
   0: '未跟进',
   1: '洽谈中',
   2: '已签单',
@@ -95,9 +95,9 @@ export default class User extends Component {
       dataIndex: 'customerSource',
     },
     {
-      title: '订单状态',
-      dataIndex: 'orderStatus',
-      render: text => orderStatus[`${text}`],
+      title: '会员状态',
+      dataIndex: 'babyStatus',
+      render: (text = 0) => babyStatus[`${text}`],
     },
     {
       title: '操作',

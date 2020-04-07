@@ -25,6 +25,7 @@ export default class Order extends Component {
     idList: [],
     deleteAll: false,
     productList: [],
+    showContract: false,
   };
 
   query = this.props.location.query;
@@ -302,11 +303,13 @@ export default class Order extends Component {
   };
 
   handlePrintContract = userData => {
-    const oldHtml = window.document.body.innerHTML;
-    window.document.body.innerHTML = window.document.getElementById('contract').innerHTML;
-    window.print();
-    window.document.body.innerHTML = oldHtml;
-    // window.location.reload();
+    this.setState({ orderInfo: userData, showContract: true }, () => {
+      const oldHtml = window.document.body.innerHTML;
+      window.document.body.innerHTML = window.document.getElementById('contract').innerHTML;
+      window.print();
+      window.document.body.innerHTML = oldHtml;
+      window.location.reload();
+    });
   };
 
   render() {
@@ -377,7 +380,9 @@ export default class Order extends Component {
           listInst={<ListTable {...tableProps} />}
         />
         <AddOrderModal {...modalProps} />
-        <Contract />
+        {this.state.showContract && (
+          <Contract userData={this.state.orderInfo} orderNo={this.state.orderNo} />
+        )}
       </>
     );
   }

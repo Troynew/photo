@@ -8,7 +8,7 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 
-orderStatus = [
+const babyStatus = [
   { key: 0, value: '未跟进' },
   { key: 1, value: '洽谈中' },
   { key: 2, value: '已签单' },
@@ -174,12 +174,12 @@ export default class AddUserModal extends PureComponent {
               initialValue: modalType === 'edit' ? initData.customerSource : null,
             })(<Input placeholder="请输入" />)}
           </FormItem>
-          <FormItem {...modalFormItemLayout} label="订单状态">
-            {getFieldDecorator('orderStatus', {
-              initialValue: modalType === 'edit' ? initData.orderStatus : null,
+          <FormItem {...modalFormItemLayout} label="客户状态">
+            {getFieldDecorator('babyStatus', {
+              initialValue: modalType === 'edit' ? initData.babyStatus : null,
             })(
               <Select placeholder="请选择">
-                {orderStatus.map(item => {
+                {babyStatus.map(item => {
                   return (
                     <Option key={item.key} value={item.key}>
                       {item.value}

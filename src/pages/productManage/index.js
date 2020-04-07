@@ -95,6 +95,7 @@ export default class Product extends Component {
   handleCloseAddModal = () => this.setState({ showAddModal: false });
 
   handleAddProduct = productData => {
+    console.log('productData', productData);
     if (this.state.modalType === 'add') {
       this.props
         .dispatch({

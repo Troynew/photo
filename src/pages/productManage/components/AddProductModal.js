@@ -1,27 +1,56 @@
 import React, { PureComponent } from 'react';
-import { Form, Input, Modal, Radio, DatePicker } from 'antd';
-import moment from 'moment';
+import { Form, Input, Modal, Radio, Select } from 'antd';
 import config from '@/utils/config';
 
 const { modalFormItemLayout } = config;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
+const Option = Select.Option;
+
+const babyStatus = [
+  { key: 0, value: '未跟进' },
+  { key: 1, value: '洽谈中' },
+  { key: 2, value: '已签单' },
+  { key: 3, value: '无意向' },
+];
 
 @Form.create()
 export default class AddUserModal extends PureComponent {
+  state = { product: '' };
+
+  componentDidMount() {
+    const {
+      initData: { product },
+    } = this.props;
+    if (product && product !== '' && product !== null) {
+      this.setState({ product });
+    }
+  }
+
   handleModalOk = () => {
     const {
       form: { validateFields },
       onModalOK,
     } = this.props;
+    const { product } = this.state;
     validateFields((err, values) => {
       if (err) return;
+      values.product = product;
       onModalOK(values);
     });
   };
 
   showTwoDemical = (value = 0) => {
     return Number(value).toFixed(2);
+  };
+
+  handleProductChange = value => {
+    const { product } = this.state;
+    if (product === '') {
+      this.setState({ product: value });
+    } else {
+      this.setState({ product: product + ',' + value });
+    }
   };
 
   render() {
@@ -33,6 +62,8 @@ export default class AddUserModal extends PureComponent {
       modalType,
     } = this.props;
 
+    const { product } = this.state;
+
     return (
       <Modal
         title={modalType === 'add' ? '新建套餐' : '编辑套餐'}
@@ -42,13 +73,199 @@ export default class AddUserModal extends PureComponent {
         maskClosable={true}
         okText="保存"
         destroyOnClose
+        width={1024}
       >
         <Form>
           <FormItem {...modalFormItemLayout} label="产品">
-            {getFieldDecorator('product', {
-              initialValue: modalType === 'edit' ? initData.product : null,
-            })(<Input placeholder="请输入" />)}
+            <div style={{ height: '32px', width: '100%', border: '1px solid #d9d9d9' }}>
+              {product}
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+              }}
+            >
+              <div style={{ width: '20%', textAlign: 'center' }}>相册</div>
+              <div style={{ width: '20%', textAlign: 'center' }}>摆台</div>
+              <div style={{ width: '20%', textAlign: 'center' }}>底片</div>
+              <div style={{ width: '20%', textAlign: 'center' }}>放大框</div>
+              <div style={{ width: '20%', textAlign: 'center' }}>MV</div>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+              }}
+            >
+              {getFieldDecorator('photo', {
+                initialValue: modalType === 'edit' ? initData.photo : null,
+              })(
+                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
+                  {babyStatus.map(item => {
+                    return (
+                      <Option key={item.key} value={item.value}>
+                        {item.value}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+
+              {getFieldDecorator('ceramic', {
+                initialValue: modalType === 'edit' ? initData.ceramic : null,
+              })(
+                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
+                  {babyStatus.map(item => {
+                    return (
+                      <Option key={item.key} value={item.value}>
+                        {item.value}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+
+              {getFieldDecorator('plate', {
+                initialValue: modalType === 'edit' ? initData.plate : null,
+              })(
+                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
+                  {babyStatus.map(item => {
+                    return (
+                      <Option key={item.key} value={item.value}>
+                        {item.value}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+
+              {getFieldDecorator('easelmask', {
+                initialValue: modalType === 'edit' ? initData.easelmask : null,
+              })(
+                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
+                  {babyStatus.map(item => {
+                    return (
+                      <Option key={item.key} value={item.value}>
+                        {item.value}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+
+              {getFieldDecorator('mv', {
+                initialValue: modalType === 'edit' ? initData.mv : null,
+              })(
+                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
+                  {babyStatus.map(item => {
+                    return (
+                      <Option key={item.key} value={item.value}>
+                        {item.value}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+              }}
+            >
+              <div style={{ width: '20%', textAlign: 'center' }}>挂画</div>
+              <div style={{ width: '20%', textAlign: 'center' }}>微视</div>
+              <div style={{ width: '20%', textAlign: 'center' }}>单片</div>
+              <div style={{ width: '20%', textAlign: 'center' }}>照片墙</div>
+              <div style={{ width: '20%', textAlign: 'center' }}>证件照</div>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+              }}
+            >
+              {getFieldDecorator('painting', {
+                initialValue: modalType === 'edit' ? initData.painting : null,
+              })(
+                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
+                  {babyStatus.map(item => {
+                    return (
+                      <Option key={item.key} value={item.value}>
+                        {item.value}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+
+              {getFieldDecorator('vedio', {
+                initialValue: modalType === 'edit' ? initData.vedio : null,
+              })(
+                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
+                  {babyStatus.map(item => {
+                    return (
+                      <Option key={item.key} value={item.value}>
+                        {item.value}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+
+              {getFieldDecorator('monolithic', {
+                initialValue: modalType === 'edit' ? initData.monolithic : null,
+              })(
+                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
+                  {babyStatus.map(item => {
+                    return (
+                      <Option key={item.key} value={item.value}>
+                        {item.value}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+
+              {getFieldDecorator('photowall', {
+                initialValue: modalType === 'edit' ? initData.photowall : null,
+              })(
+                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
+                  {babyStatus.map(item => {
+                    return (
+                      <Option key={item.key} value={item.value}>
+                        {item.value}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+
+              {getFieldDecorator('idphoto', {
+                initialValue: modalType === 'edit' ? initData.idphoto : null,
+              })(
+                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
+                  {babyStatus.map(item => {
+                    return (
+                      <Option key={item.key} value={item.value}>
+                        {item.value}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              )}
+            </div>
           </FormItem>
+
           <FormItem {...modalFormItemLayout} label="价格">
             {getFieldDecorator('price', {
               initialValue: modalType === 'edit' ? this.showTwoDemical(initData.price) : null,
