@@ -27,6 +27,12 @@ export default [
         authority: 'product:list',
       },
       {
+        path: '/attachmentManage',
+        name: 'attachmentManage',
+        component: './attachmentManage',
+        authority: 'product:list',
+      },
+      {
         path: '/sysUserManage',
         name: 'sysUserManage',
         component: './sysUserManage',

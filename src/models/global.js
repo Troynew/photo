@@ -1,7 +1,6 @@
-import { logout, login, editPassword } from './../services/common';
+import { logout, login, editPassword, saveAttachment } from './../services/common';
 import { setAuthority } from '@/utils/authority';
 import { reloadAuthorized } from '@/utils/Authorized';
-import { rule } from 'postcss';
 export default {
   namespace: 'global',
 
@@ -14,9 +13,9 @@ export default {
   },
 
   subscriptions: {
-    setup({ dispatch, history }) {
-      // dispatch({ type: 'login/login' });
-    },
+    // setup({ dispatch, history }) {
+    //   // dispatch({ type: 'login/login' });
+    // },
   },
 
   effects: {
@@ -43,6 +42,11 @@ export default {
 
     *editPassword({ payload }, { call }) {
       const data = yield call(editPassword, payload);
+      if (data) return data;
+    },
+
+    *saveAttachment({ payload }, { call }) {
+      const data = yield call(saveAttachment, payload);
       if (data) return data;
     },
   },

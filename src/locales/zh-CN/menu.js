@@ -32,4 +32,5 @@ export default {
   'menu.orderManage.add': '新增订单',
   'menu.orderManage.update': '编辑订单',
   'menu.orderManage.preview': '查看订单',
+  'menu.attachmentManage': '配件管理',
 };

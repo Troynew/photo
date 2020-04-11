@@ -246,6 +246,15 @@ export default class AddUserModal extends PureComponent {
               </Select>
             )}
           </FormItem>
+          <FormItem {...modalFormItemLayout} label="第一期">
+            {getFieldDecorator('first')(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem {...modalFormItemLayout} label="第二期">
+            {getFieldDecorator('second')(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem {...modalFormItemLayout} label="第三期">
+            {getFieldDecorator('third')(<Input placeholder="请输入" />)}
+          </FormItem>
           <FormItem {...modalFormItemLayout} label="备注">
             {getFieldDecorator('remark')(<Input placeholder="请输入" />)}
           </FormItem>

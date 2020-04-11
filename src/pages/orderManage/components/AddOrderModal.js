@@ -270,6 +270,21 @@ export default class AddOrderModal extends PureComponent {
               initialValue: modalType === 'edit' ? this.showTwoDemical(initData.balance) : null,
             })(<Input placeholder="请输入" />)}
           </FormItem>
+          <FormItem {...modalFormItemLayout} label="第一期">
+            {getFieldDecorator('first', {
+              initialValue: modalType === 'edit' ? initData.first : null,
+            })(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem {...modalFormItemLayout} label="第二期">
+            {getFieldDecorator('second', {
+              initialValue: modalType === 'edit' ? initData.second : null,
+            })(<Input placeholder="请输入" />)}
+          </FormItem>
+          <FormItem {...modalFormItemLayout} label="第三期">
+            {getFieldDecorator('third', {
+              initialValue: modalType === 'edit' ? initData.third : null,
+            })(<Input placeholder="请输入" />)}
+          </FormItem>
           <FormItem {...modalFormItemLayout} label="备注">
             {getFieldDecorator('remark', {
               initialValue: modalType === 'edit' ? initData.remark : null,
