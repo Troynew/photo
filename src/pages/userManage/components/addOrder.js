@@ -35,7 +35,9 @@ export default class AddUserModal extends PureComponent {
     validateFields((err, values) => {
       if (err) return;
       values.product = product;
-      onModalOK(values);
+      const { first = '', second = '', third = '', ...rest } = values;
+      rest.orderStage = first + ',' + second + ',' + third;
+      onModalOK(rest);
     });
   };
 

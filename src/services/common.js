@@ -21,9 +21,23 @@ export async function editPassword(params) {
 }
 
 export async function saveAttachment(params) {
-  return request(`attachment/save`, {
+  return request(`photo/attachment/save`, {
     method: 'POST',
     body: params,
     isFormData: true,
+  });
+}
+
+export async function editAttachment(params) {
+  return request(`photo/attachment/edit`, {
+    method: 'POST',
+    body: params,
+    isFormData: true,
+  });
+}
+
+export async function queryAttachment() {
+  return request(`photo/attachment/list`, {
+    method: 'GET',
   });
 }

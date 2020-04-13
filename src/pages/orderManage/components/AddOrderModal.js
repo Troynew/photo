@@ -33,7 +33,9 @@ export default class AddOrderModal extends PureComponent {
     } = this.props;
     validateFields((err, values) => {
       if (err) return;
-      onModalOK(values);
+      const { first = '', second = '', third = '', ...rest } = values;
+      rest.orderStage = first + ',' + second + ',' + third;
+      onModalOK(rest);
     });
   };
 
@@ -272,17 +274,17 @@ export default class AddOrderModal extends PureComponent {
           </FormItem>
           <FormItem {...modalFormItemLayout} label="第一期">
             {getFieldDecorator('first', {
-              initialValue: modalType === 'edit' ? initData.first : null,
+              initialValue: modalType === 'edit' ? (initData.orderStage || '').split(',')[0] : '',
             })(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="第二期">
             {getFieldDecorator('second', {
-              initialValue: modalType === 'edit' ? initData.second : null,
+              initialValue: modalType === 'edit' ? (initData.orderStage || '').split(',')[0] : '',
             })(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="第三期">
             {getFieldDecorator('third', {
-              initialValue: modalType === 'edit' ? initData.third : null,
+              initialValue: modalType === 'edit' ? (initData.orderStage || '').split(',')[0] : '',
             })(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="备注">

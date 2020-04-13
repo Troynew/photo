@@ -79,9 +79,9 @@ export default class Order extends Component {
       title: '备注',
       dataIndex: 'remark',
     },
-    { title: '第一期', dataIndex: 'first' },
-    { title: '第二期', dataIndex: 'second' },
-    { title: '第三期', dataIndex: 'third' },
+    { title: '第一期', dataIndex: 'orderStage', render: (text = '') => (text || '').split(',')[0] },
+    { title: '第二期', dataIndex: 'orderStage', render: (text = '') => (text || '').split(',')[1] },
+    { title: '第三期', dataIndex: 'orderStage', render: (text = '') => (text || '').split(',')[2] },
     {
       title: '操作',
       dataIndex: 'operate',

@@ -53,7 +53,7 @@ export default class AttachmentManage extends PureComponent {
         value8: '',
       },
       {
-        id: 'easelmask',
+        id: 'easelMask',
         key: '放大框',
         value1: '',
         value2: '',
@@ -113,7 +113,7 @@ export default class AttachmentManage extends PureComponent {
         value8: '',
       },
       {
-        id: 'photowall',
+        id: 'photoWall',
         key: '照片墙',
         value1: '',
         value2: '',
@@ -125,7 +125,7 @@ export default class AttachmentManage extends PureComponent {
         value8: '',
       },
       {
-        id: 'idphoto',
+        id: 'idPhoto',
         key: '证件照',
         value1: '',
         value2: '',
@@ -138,6 +138,12 @@ export default class AttachmentManage extends PureComponent {
       },
     ],
   };
+
+  componentWillMount() {
+    this.props.dispatch({
+      type: 'global/queryAttachment',
+    });
+  }
 
   handleChange = (record, index, e) => {
     console.log('record', record);
@@ -158,13 +164,13 @@ export default class AttachmentManage extends PureComponent {
       photo: '',
       ceramic: '',
       plate: '',
-      easelmask: '',
+      easelMask: '',
       mv: '',
       painting: '',
       vedio: '',
       monolithic: '',
-      photowall: '',
-      idphoto: '',
+      photoWall: '',
+      idPhoto: '',
     };
     list.map(item => {
       let values = '';
