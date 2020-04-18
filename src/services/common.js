@@ -21,7 +21,7 @@ export async function editPassword(params) {
 }
 
 export async function saveAttachment(params) {
-  return request(`photo/attachment/save`, {
+  return request(`photo/attachment/add`, {
     method: 'POST',
     body: params,
     isFormData: true,
@@ -30,7 +30,7 @@ export async function saveAttachment(params) {
 
 export async function editAttachment(params) {
   return request(`photo/attachment/edit`, {
-    method: 'POST',
+    method: 'PUT',
     body: params,
     isFormData: true,
   });

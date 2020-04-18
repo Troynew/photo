@@ -10,11 +10,12 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 
 @connect(({ loading, global }) => ({
-  loading: loading.effects['global/saveAttachment'],
+  loading: loading.effects['global/saveAttachment'] || loading.effects['global/editAttachment'],
 }))
 @Form.create()
 export default class AttachmentManage extends PureComponent {
   state = {
+    attachment: {},
     list: [
       {
         id: 'photo',
@@ -89,7 +90,7 @@ export default class AttachmentManage extends PureComponent {
         value8: '',
       },
       {
-        id: 'vedio',
+        id: 'video',
         key: '微视',
         value1: '',
         value2: '',
@@ -140,10 +141,28 @@ export default class AttachmentManage extends PureComponent {
   };
 
   componentWillMount() {
-    this.props.dispatch({
-      type: 'global/queryAttachment',
-    });
+    this.initData();
   }
+
+  initData = () => {
+    this.props
+      .dispatch({
+        type: 'global/queryAttachment',
+      })
+      .then(res => {
+        console.log('res', res);
+        const data = res;
+        const newList = this.state.list.map((item, index) => {
+          const valueList = (data[`${item.id}`] || '').split(',');
+          for (let i = 1; i <= 8; i++) {
+            item[`value${i}`] = valueList[i - 1] || '';
+          }
+          return item;
+        });
+        console.log('newLIst', newList);
+        this.setState({ list: newList, id: data.id });
+      });
+  };
 
   handleChange = (record, index, e) => {
     console.log('record', record);
@@ -167,7 +186,7 @@ export default class AttachmentManage extends PureComponent {
       easelMask: '',
       mv: '',
       painting: '',
-      vedio: '',
+      video: '',
       monolithic: '',
       photoWall: '',
       idPhoto: '',
@@ -182,12 +201,24 @@ export default class AttachmentManage extends PureComponent {
           values = values + ',' + item[`${keys}`];
         }
       }
-      obj[`${item.id}`] = values;
+      obj[`${item.id}`] = values || '';
     });
-    this.props.dispatch({
-      type: 'global/saveAttachment',
-      payload: { attachment: JSON.stringify(obj) },
-    });
+    if (this.state.id) {
+      obj.id = this.state.id;
+      this.props
+        .dispatch({
+          type: 'global/editAttachment',
+          payload: obj,
+        })
+        .then(() => this.initData());
+    } else {
+      this.props
+        .dispatch({
+          type: 'global/saveAttachment',
+          payload: obj,
+        })
+        .then(() => this.initData());
+    }
   };
 
   columns = [

@@ -14,17 +14,18 @@ const payTypeList = [
   { key: 5, value: 'POS' },
   { key: 6, value: '网付' },
 ];
-
-const babyStatus = [
-  { key: 0, value: '未跟进' },
-  { key: 1, value: '洽谈中' },
-  { key: 2, value: '已签单' },
-  { key: 3, value: '无意向' },
-];
-
 @Form.create()
 export default class AddUserModal extends PureComponent {
-  state = { product: '' };
+  state = {
+    product: [
+      { key: 'extraMv', value: '', id: 'MV' },
+      { key: 'extraPainting', value: '', id: '挂画' },
+      { key: 'extraVideo', value: '', id: '微视' },
+      { key: 'extraMonolithic', value: '', id: '单片' },
+      { key: 'extraPhotoWall', value: '', id: '照片墙' },
+      { key: 'extraIdPhoto', value: '', id: '证件照' },
+    ],
+  };
 
   handleModalOk = () => {
     const {
@@ -34,10 +35,12 @@ export default class AddUserModal extends PureComponent {
     const { product } = this.state;
     validateFields((err, values) => {
       if (err) return;
-      values.product = product;
-      const { first = '', second = '', third = '', ...rest } = values;
-      rest.orderStage = first + ',' + second + ',' + third;
-      onModalOK(rest);
+      values.extra = product
+        .filter(item => item.value)
+        .map(item => item.id + ':' + item.value)
+        .toLocaleString();
+      console.log('values', values);
+      onModalOK(values);
     });
   };
 
@@ -45,13 +48,17 @@ export default class AddUserModal extends PureComponent {
     return Number(value).toFixed(2);
   };
 
-  handleProductChange = value => {
+  handleProductChange = (value, type) => {
+    console.log('ddddddddddddddddd', value, type);
     const { product } = this.state;
-    if (product === '') {
-      this.setState({ product: value });
-    } else {
-      this.setState({ product: product + ',' + value });
-    }
+    const newProduct = product.map(item => {
+      if (item.key === type) {
+        item.value = value !== undefined ? value : '';
+      }
+      return item;
+    });
+    console.log('newProduct', newProduct);
+    this.setState({ product: newProduct });
   };
 
   render() {
@@ -60,9 +67,19 @@ export default class AddUserModal extends PureComponent {
       onModalCancel,
       showModal,
       productList = [],
+      mvList = [],
+      paintingList = [],
+      videoList = [],
+      monolithicList = [],
+      photoWallList = [],
+      idPhotoList = [],
     } = this.props;
 
     const { product } = this.state;
+    const extra = product
+      .filter(item => item.value)
+      .map(item => item.id + ':' + item.value)
+      .toLocaleString();
 
     console.log('props', this.props);
     return (
@@ -94,7 +111,7 @@ export default class AddUserModal extends PureComponent {
 
           <FormItem {...modalFormItemLayout} label="额外赠送（总监特批）">
             <div style={{ height: '32px', width: '100%', border: '1px solid #d9d9d9' }}>
-              {product}
+              {extra}
             </div>
             <div
               style={{
@@ -116,42 +133,54 @@ export default class AddUserModal extends PureComponent {
                 justifyContent: 'flex-start',
               }}
             >
-              {getFieldDecorator('mv', {
+              {getFieldDecorator('extraMv', {
                 initialValue: null,
               })(
-                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                <Select
+                  placeholder="请选择"
+                  onChange={value => this.handleProductChange(value, 'extraMv')}
+                  allowClear
+                >
+                  {mvList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
                 </Select>
               )}
 
-              {getFieldDecorator('painting', {
+              {getFieldDecorator('extraPainting', {
                 initialValue: null,
               })(
-                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                <Select
+                  placeholder="请选择"
+                  onChange={value => this.handleProductChange(value, 'extraPainting')}
+                  allowClear
+                >
+                  {paintingList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
                 </Select>
               )}
 
-              {getFieldDecorator('vedio', {
+              {getFieldDecorator('extraVideo', {
                 initialValue: null,
               })(
-                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                <Select
+                  placeholder="请选择"
+                  onChange={value => this.handleProductChange(value, 'extraVideo')}
+                  allowClear
+                >
+                  {videoList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
@@ -178,42 +207,54 @@ export default class AddUserModal extends PureComponent {
                 justifyContent: 'flex-start',
               }}
             >
-              {getFieldDecorator('monolithic', {
+              {getFieldDecorator('extraMonolithic', {
                 initialValue: null,
               })(
-                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                <Select
+                  placeholder="请选择"
+                  onChange={value => this.handleProductChange(value, 'extraMonolithic')}
+                  allowClear
+                >
+                  {monolithicList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
                 </Select>
               )}
 
-              {getFieldDecorator('photowall', {
+              {getFieldDecorator('extraPhotoWall', {
                 initialValue: null,
               })(
-                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                <Select
+                  placeholder="请选择"
+                  onChange={value => this.handleProductChange(value, 'extraPhotoWall')}
+                  allowClear
+                >
+                  {photoWallList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
                 </Select>
               )}
 
-              {getFieldDecorator('idphoto', {
+              {getFieldDecorator('extraIdPhoto', {
                 initialValue: null,
               })(
-                <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                <Select
+                  placeholder="请选择"
+                  onChange={value => this.handleProductChange(value, 'extraIdPhoto')}
+                  allowClear
+                >
+                  {idPhotoList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
@@ -249,13 +290,13 @@ export default class AddUserModal extends PureComponent {
             )}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="第一期">
-            {getFieldDecorator('first')(<Input placeholder="请输入" />)}
+            {getFieldDecorator('firstStage')(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="第二期">
-            {getFieldDecorator('second')(<Input placeholder="请输入" />)}
+            {getFieldDecorator('secondStage')(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="第三期">
-            {getFieldDecorator('third')(<Input placeholder="请输入" />)}
+            {getFieldDecorator('thirdStage')(<Input placeholder="请输入" />)}
           </FormItem>
           <FormItem {...modalFormItemLayout} label="备注">
             {getFieldDecorator('remark')(<Input placeholder="请输入" />)}

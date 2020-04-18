@@ -26,6 +26,16 @@ export default class Order extends Component {
     deleteAll: false,
     productList: [],
     showContract: false,
+    // photoList: [],
+    // ceramicList: [],
+    // plateList: [],
+    // easelMaskList: [],
+    mvList: [],
+    paintingList: [],
+    videoList: [],
+    monolithicList: [],
+    photoWallList: [],
+    idPhotoList: [],
   };
 
   query = this.props.location.query;
@@ -79,9 +89,9 @@ export default class Order extends Component {
       title: '备注',
       dataIndex: 'remark',
     },
-    { title: '第一期', dataIndex: 'orderStage', render: (text = '') => (text || '').split(',')[0] },
-    { title: '第二期', dataIndex: 'orderStage', render: (text = '') => (text || '').split(',')[1] },
-    { title: '第三期', dataIndex: 'orderStage', render: (text = '') => (text || '').split(',')[2] },
+    { title: '第一期', dataIndex: 'firstStage' },
+    { title: '第二期', dataIndex: 'secondStage' },
+    { title: '第三期', dataIndex: 'thirdStage' },
     {
       title: '操作',
       dataIndex: 'operate',
@@ -155,6 +165,54 @@ export default class Order extends Component {
         });
       });
   }
+
+  componentWillMount() {
+    this.initData();
+  }
+
+  initData = () => {
+    this.props
+      .dispatch({
+        type: 'global/queryAttachment',
+      })
+      .then(res => {
+        console.log('res', res);
+        const {
+          // photo = '',
+          // ceramic = '',
+          // plate = '',
+          // easelMask = '',
+          mv = '',
+          painting = '',
+          video = '',
+          monolithic = '',
+          photoWall = '',
+          idPhoto = '',
+        } = res;
+        // const photoList = photo.split(',');
+        // const ceramicList = photo.split(',');
+        // const plateList = photo.split(',');
+        // const easelMaskList = photo.split(',');
+        const mvList = (mv || '').split(',');
+        const paintingList = (painting || '').split(',');
+        const videoList = (video || '').split(',');
+        const monolithicList = (monolithic || '').split(',');
+        const photoWallList = (photoWall || '').split(',');
+        const idPhotoList = (idPhoto || '').split(',');
+        this.setState({
+          // photoList,
+          // ceramicList,
+          // plateList,
+          // easelMaskList,
+          mvList,
+          paintingList,
+          videoList,
+          monolithicList,
+          photoWallList,
+          idPhotoList,
+        });
+      });
+  };
 
   handleSearch = params => {
     console.log('params', params);
@@ -335,6 +393,16 @@ export default class Order extends Component {
       initData: this.state.orderInfo,
       modalType: this.state.modalType,
       productList: this.state.productList,
+      // photoList: this.state.photoList,
+      // ceramicList: this.state.ceramicList,
+      // plateList: this.state.plateList,
+      // easelMaskList: this.state.easelMaskList,
+      mvList: this.state.mvList,
+      paintingList: this.state.paintingList,
+      videoList: this.state.videoList,
+      monolithicList: this.state.monolithicList,
+      photoWallList: this.state.photoWallList,
+      idPhotoList: this.state.idPhotoList,
     };
 
     return (
@@ -382,7 +450,7 @@ export default class Order extends Component {
           }
           listInst={<ListTable {...tableProps} />}
         />
-        <AddOrderModal {...modalProps} />
+        {this.state.showAddModal && <AddOrderModal {...modalProps} />}
         {this.state.showContract && (
           <Contract userData={this.state.orderInfo} orderNo={this.state.orderNo} />
         )}

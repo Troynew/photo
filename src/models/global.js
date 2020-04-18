@@ -1,4 +1,11 @@
-import { logout, login, editPassword, saveAttachment, queryAttachment } from './../services/common';
+import {
+  logout,
+  login,
+  editPassword,
+  saveAttachment,
+  queryAttachment,
+  editAttachment,
+} from './../services/common';
 import { setAuthority } from '@/utils/authority';
 import { reloadAuthorized } from '@/utils/Authorized';
 export default {
@@ -52,6 +59,13 @@ export default {
 
     *queryAttachment({ payload }, { call }) {
       const data = yield call(queryAttachment, payload);
+      if (data) {
+        return data.result;
+      }
+    },
+
+    *editAttachment({ payload }, { call }) {
+      const data = yield call(editAttachment, payload);
       if (data) {
         return data;
       }

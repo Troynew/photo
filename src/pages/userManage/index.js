@@ -33,6 +33,16 @@ export default class User extends Component {
     idList: [],
     deleteAll: false,
     productList: [],
+    photoList: [],
+    ceramicList: [],
+    plateList: [],
+    easelMaskList: [],
+    mvList: [],
+    paintingList: [],
+    videoList: [],
+    monolithicList: [],
+    photoWallList: [],
+    idPhotoList: [],
   };
 
   query = this.props.location.query;
@@ -140,12 +150,53 @@ export default class User extends Component {
     },
   ];
 
-  // componentDidMount() {
-  //   router.push({
-  //     pathname: '/userManage',
-  //     query: { pageNum: '1', pageSize: '10' },
-  //   });
-  // }
+  componentDidMount() {
+    this.initData();
+  }
+
+  initData = () => {
+    this.props
+      .dispatch({
+        type: 'global/queryAttachment',
+      })
+      .then(res => {
+        console.log('res', res);
+        const {
+          // photo = '',
+          // ceramic = '',
+          // plate = '',
+          // easelMask = '',
+          mv = '',
+          painting = '',
+          video = '',
+          monolithic = '',
+          photoWall = '',
+          idPhoto = '',
+        } = res;
+        // const photoList = photo.split(',');
+        // const ceramicList = photo.split(',');
+        // const plateList = photo.split(',');
+        // const easelMaskList = photo.split(',');
+        const mvList = (mv || '').split(',');
+        const paintingList = (painting || '').split(',');
+        const videoList = (video || '').split(',');
+        const monolithicList = (monolithic || '').split(',');
+        const photoWallList = (photoWall || '').split(',');
+        const idPhotoList = (idPhoto || '').split(',');
+        this.setState({
+          // photoList,
+          // ceramicList,
+          // plateList,
+          // easelMaskList,
+          mvList,
+          paintingList,
+          videoList,
+          monolithicList,
+          photoWallList,
+          idPhotoList,
+        });
+      });
+  };
 
   handleSearch = params => {
     let query = {};
@@ -331,6 +382,16 @@ export default class User extends Component {
       onModalOK: this.handleAddOrderOk,
       initData: this.state.userInfo,
       productList: this.state.productList,
+      // photoList: this.state.photoList,
+      // ceramicList: this.state.ceramicList,
+      // plateList: this.state.plateList,
+      // easelMaskList: this.state.easelMaskList,
+      mvList: this.state.mvList,
+      paintingList: this.state.paintingList,
+      videoList: this.state.videoList,
+      monolithicList: this.state.monolithicList,
+      photoWallList: this.state.photoWallList,
+      idPhotoList: this.state.idPhotoList,
     };
 
     return (
