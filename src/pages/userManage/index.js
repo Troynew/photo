@@ -159,7 +159,7 @@ export default class User extends Component {
       .dispatch({
         type: 'global/queryAttachment',
       })
-      .then(res => {
+      .then((res = {}) => {
         console.log('res', res);
         const {
           // photo = '',

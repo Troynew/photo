@@ -2,6 +2,23 @@ import React from 'react';
 import { Row, Col } from 'antd';
 
 const Contract = ({ orderNo, userData = {} }) => {
+  const showPayType = type => {
+    switch (type) {
+      case 1:
+        return '微信';
+      case 2:
+        return '支付宝';
+      case 3:
+        return '现金';
+      case 4:
+        return '卡扣';
+      case 5:
+        return 'POS';
+      case 6:
+        return '网付';
+    }
+  };
+
   return (
     <div id="contract" style={{ display: 'none' }}>
       <Row>
@@ -151,7 +168,7 @@ const Contract = ({ orderNo, userData = {} }) => {
             height: '30px',
           }}
         >
-          {userData.babyName}
+          {userData.motherName}
         </Col>
         <Col
           span={3}
@@ -177,7 +194,7 @@ const Contract = ({ orderNo, userData = {} }) => {
             height: '30px',
           }}
         >
-          {userData.sex}
+          {userData.motherPhoneNum}
         </Col>
       </Row>
 
@@ -209,7 +226,7 @@ const Contract = ({ orderNo, userData = {} }) => {
             height: '30px',
           }}
         >
-          {userData.babyName}
+          {''}
         </Col>
       </Row>
 
@@ -242,7 +259,7 @@ const Contract = ({ orderNo, userData = {} }) => {
             borderRight: '1px solid #000000',
           }}
         >
-          {userData.babyName}
+          {userData.packageName}
         </Col>
         <Col
           span={2}
@@ -268,7 +285,7 @@ const Contract = ({ orderNo, userData = {} }) => {
             borderRight: '1px solid #000000',
           }}
         >
-          {userData.babyName}
+          {userData.paidMoney + userData.unPaidMoney}
         </Col>
         <Col
           span={3}
@@ -293,7 +310,7 @@ const Contract = ({ orderNo, userData = {} }) => {
             height: '30px',
           }}
         >
-          {userData.babyName}
+          {}
         </Col>
       </Row>
 
@@ -326,7 +343,7 @@ const Contract = ({ orderNo, userData = {} }) => {
             borderRight: '1px solid #000000',
           }}
         >
-          {userData.babyName}
+          {''}
         </Col>
         <Col
           span={2}
@@ -352,7 +369,7 @@ const Contract = ({ orderNo, userData = {} }) => {
             borderRight: '1px solid #000000',
           }}
         >
-          {userData.babyName}
+          {''}
         </Col>
         <Col
           span={3}
@@ -377,7 +394,7 @@ const Contract = ({ orderNo, userData = {} }) => {
             height: '30px',
           }}
         >
-          {userData.babyName}
+          {showPayType(userData.payType)}
         </Col>
       </Row>
 
@@ -410,7 +427,7 @@ const Contract = ({ orderNo, userData = {} }) => {
             borderRight: '1px solid #000000',
           }}
         >
-          {userData.babyName}
+          {''}
         </Col>
         <Col
           span={2}
@@ -436,7 +453,7 @@ const Contract = ({ orderNo, userData = {} }) => {
             borderRight: '1px solid #000000',
           }}
         >
-          {userData.babyName}
+          {''}
         </Col>
         <Col
           span={3}
@@ -461,7 +478,7 @@ const Contract = ({ orderNo, userData = {} }) => {
             height: '30px',
           }}
         >
-          {userData.babyName}
+          {''}
         </Col>
       </Row>
 

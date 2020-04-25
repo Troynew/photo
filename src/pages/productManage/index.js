@@ -22,6 +22,16 @@ export default class Product extends Component {
     modalType: null,
     idList: [],
     deleteAll: false,
+    photoList: [],
+    ceramicList: [],
+    plateList: [],
+    easelMaskList: [],
+    mvList: [],
+    paintingList: [],
+    videoList: [],
+    monolithicList: [],
+    photoWallList: [],
+    idPhotoList: [],
   };
 
   query = this.props.location.query;
@@ -82,6 +92,54 @@ export default class Product extends Component {
   //     query: { pageNum: '1', pageSize: '10' },
   //   });
   // }
+
+  componentWillMount() {
+    this.initData();
+  }
+
+  initData = () => {
+    this.props
+      .dispatch({
+        type: 'global/queryAttachment',
+      })
+      .then(res => {
+        console.log('res', res);
+        const {
+          photo = '',
+          ceramic = '',
+          plate = '',
+          easelMask = '',
+          mv = '',
+          painting = '',
+          video = '',
+          monolithic = '',
+          photoWall = '',
+          idPhoto = '',
+        } = res;
+        const photoList = photo.split(',');
+        const ceramicList = ceramic.split(',');
+        const plateList = plate.split(',');
+        const easelMaskList = easelMask.split(',');
+        const mvList = (mv || '').split(',');
+        const paintingList = (painting || '').split(',');
+        const videoList = (video || '').split(',');
+        const monolithicList = (monolithic || '').split(',');
+        const photoWallList = (photoWall || '').split(',');
+        const idPhotoList = (idPhoto || '').split(',');
+        this.setState({
+          photoList,
+          ceramicList,
+          plateList,
+          easelMaskList,
+          mvList,
+          paintingList,
+          videoList,
+          monolithicList,
+          photoWallList,
+          idPhotoList,
+        });
+      });
+  };
 
   handleSearch = params => {
     router.push({
@@ -202,6 +260,16 @@ export default class Product extends Component {
       onModalOK: this.handleAddProduct,
       initData: this.state.productInfo,
       modalType: this.state.modalType,
+      photoList: this.state.photoList,
+      ceramicList: this.state.ceramicList,
+      plateList: this.state.plateList,
+      easelMaskList: this.state.easelMaskList,
+      mvList: this.state.mvList,
+      paintingList: this.state.paintingList,
+      videoList: this.state.videoList,
+      monolithicList: this.state.monolithicList,
+      photoWallList: this.state.photoWallList,
+      idPhotoList: this.state.idPhotoList,
     };
 
     return (

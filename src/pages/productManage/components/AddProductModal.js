@@ -7,13 +7,6 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 
-const babyStatus = [
-  { key: 0, value: '未跟进' },
-  { key: 1, value: '洽谈中' },
-  { key: 2, value: '已签单' },
-  { key: 3, value: '无意向' },
-];
-
 @Form.create()
 export default class AddUserModal extends PureComponent {
   state = { product: '' };
@@ -60,6 +53,16 @@ export default class AddUserModal extends PureComponent {
       showModal,
       initData,
       modalType,
+      photoList = [],
+      ceramicList = [],
+      plateList = [],
+      easelMaskList = [],
+      mvList = [],
+      paintingList = [],
+      videoList = [],
+      monolithicList = [],
+      photoWallList = [],
+      idPhotoList = [],
     } = this.props;
 
     const { product } = this.state;
@@ -106,10 +109,10 @@ export default class AddUserModal extends PureComponent {
                 initialValue: modalType === 'edit' ? initData.photo : null,
               })(
                 <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                  {photoList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
@@ -120,10 +123,10 @@ export default class AddUserModal extends PureComponent {
                 initialValue: modalType === 'edit' ? initData.ceramic : null,
               })(
                 <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                  {ceramicList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
@@ -134,10 +137,10 @@ export default class AddUserModal extends PureComponent {
                 initialValue: modalType === 'edit' ? initData.plate : null,
               })(
                 <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                  {plateList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
@@ -148,10 +151,10 @@ export default class AddUserModal extends PureComponent {
                 initialValue: modalType === 'edit' ? initData.easelmask : null,
               })(
                 <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                  {easelMaskList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
@@ -162,10 +165,10 @@ export default class AddUserModal extends PureComponent {
                 initialValue: modalType === 'edit' ? initData.mv : null,
               })(
                 <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                  {mvList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
@@ -198,10 +201,10 @@ export default class AddUserModal extends PureComponent {
                 initialValue: modalType === 'edit' ? initData.painting : null,
               })(
                 <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                  {paintingList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
@@ -212,10 +215,10 @@ export default class AddUserModal extends PureComponent {
                 initialValue: modalType === 'edit' ? initData.vedio : null,
               })(
                 <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                  {videoList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
@@ -226,10 +229,10 @@ export default class AddUserModal extends PureComponent {
                 initialValue: modalType === 'edit' ? initData.monolithic : null,
               })(
                 <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                  {monolithicList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
@@ -240,10 +243,10 @@ export default class AddUserModal extends PureComponent {
                 initialValue: modalType === 'edit' ? initData.photowall : null,
               })(
                 <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                  {photoWallList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
@@ -254,10 +257,10 @@ export default class AddUserModal extends PureComponent {
                 initialValue: modalType === 'edit' ? initData.idphoto : null,
               })(
                 <Select placeholder="请选择" onChange={this.handleProductChange} allowClear>
-                  {babyStatus.map(item => {
+                  {idPhotoList.map(item => {
                     return (
-                      <Option key={item.key} value={item.value}>
-                        {item.value}
+                      <Option key={item} value={item}>
+                        {item}
                       </Option>
                     );
                   })}
