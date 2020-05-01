@@ -110,7 +110,7 @@ export default class AddUserModal extends PureComponent {
           </FormItem>
 
           <FormItem {...modalFormItemLayout} label="额外赠送（总监特批）">
-            <div style={{ height: '32px', width: '100%', border: '1px solid #d9d9d9' }}>
+            <div style={{ height: '64px', width: '100%', border: '1px solid #d9d9d9' }}>
               {extra}
             </div>
             <div

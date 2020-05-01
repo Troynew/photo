@@ -40,6 +40,11 @@ export default class Product extends Component {
     {
       title: '产品',
       dataIndex: 'product',
+      render: text =>
+        text
+          .split(',')
+          .filter(item => item)
+          .toLocaleString(),
     },
     {
       title: '价格',
@@ -308,7 +313,7 @@ export default class Product extends Component {
           }
           listInst={<ListTable {...tableProps} />}
         />
-        <AddProductModal {...modalProps} />
+        {this.state.showAddModal && <AddProductModal {...modalProps} />}
       </>
     );
   }
